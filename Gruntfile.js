@@ -33,14 +33,14 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['client/js/*.js'],
-        dest: 'client/dist/built.js',
+        dest: 'client/dist/js/built.js',
       },
     },
 
     uglify: {
       my_target: {
         files: {
-          'client/dist/built.min.js': ['cLient/dist/built.js']
+          'client/dist/js/built.min.js': ['client/dist/js/built.js']
         }
       }
     },
