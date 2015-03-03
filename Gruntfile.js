@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-
+	
     jshint: {
       src: ['client/js/*.js'],
       options: {
@@ -33,22 +33,38 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['client/js/*.js'],
-        dest: 'client/dist/built.js',
+        dest: 'client/dist/js/built.js',
       },
     },
 
     uglify: {
       my_target: {
         files: {
-          'client/dist/built.min.js': ['cLient/dist/built.js']
+          'client/dist/js/built.min.js': ['client/dist/js/built.js']
         }
       }
-    }
+    },
+    less: {
+	  build: {
+        files: {
+          'client/dist/css/main.css': 'client/css/main.less'
+        }
+      }
+    },
+    cssmin: {
+      build: {
+        files: {
+          'client/dist/css/main.min.css': 'client/dist/css/main.css'
+        }
+      }
+    },
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
-  grunt.registerTask( 'default', [ 'jshint', 'concat', 'uglify' ] );
+  grunt.registerTask( 'default', [ 'jshint', 'concat', 'uglify', 'less', 'cssmin' ] );
 };
 
