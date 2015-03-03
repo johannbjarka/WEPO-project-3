@@ -1,1 +1,1 @@
-var ChatClient = angular.module('ChatClient', ['ngRoute', 'ngAnimate', 'toastr']);
+var teachingEval = angular.module('teachingEval', ['ngRoute', 'ngAnimate', 'toastr']);
