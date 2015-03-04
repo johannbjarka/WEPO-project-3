@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-	
+
     jshint: {
       src: ['client/js/*.js'],
       options: {
@@ -26,7 +26,6 @@ module.exports = function(grunt) {
         }
        }
     },
-
     concat: {
       options: {
         separator: ';',
@@ -36,7 +35,6 @@ module.exports = function(grunt) {
         dest: 'client/dist/js/built.js',
       },
     },
-
     uglify: {
       my_target: {
         files: {
@@ -58,13 +56,23 @@ module.exports = function(grunt) {
         }
       }
     },
+    karma: {
+      unit: {
+        configFile: 'client/karma.conf.js',
+      	runnerPort: 9009,
+      	singleRun: true,
+        browsers: ['PhantomJS']
+      }
+    }
   });
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask( 'default', [ 'jshint', 'concat', 'uglify', 'less', 'cssmin' ] );
+  grunt.registerTask( 'default', [ 'jshint', 'concat', 'uglify', 'less', 'cssmin', 'karma' ] );
 };
 
