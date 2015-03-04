@@ -1,4 +1,4 @@
-angular.module("teachingEval").config(['$routeProvider',
+angular.module('Evaluator').config(['$routeProvider',
 	function ($routeProvider) {
 		$routeProvider
 			.when('/login', { templateUrl: 'Views/login.html', controller: 'LoginController' })
