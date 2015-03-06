@@ -1,14 +1,17 @@
 angular.module('Evaluator').factory('LoginFactory', [
-	'$http', function($http) {
+	'$http',
+	'API',
+	function($http) {
 		return {
 			login: function(user, pass) {
 				return $http.post('API' + '/login', {
 					username: user,
 					password: pass
 				}).success(function(response) {
+					$http.defaults.headers.common.Autherization = 'Basic' + response.data.token;
 					return response.data;
-				}).error(function(errorResponse) {
-					return errorResponse.message;
+				}).error(function(response) {
+					return response.message;
 				});
 			}
 		};

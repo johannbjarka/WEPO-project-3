@@ -14,10 +14,10 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 		} else {
 			console.log(LoginFactory);
 			LoginFactory.login($scope.userName, $scope.password)
-			.then(function(data) {
-				console.log('yay');
-			}, function(error) {
-				console.log('nay');
+			.then(function(response) {
+				$location.path('/evals/' + $scope.username);
+			}, function(response) {
+				console.log('Failed to log in');
 			});
 
 		}
