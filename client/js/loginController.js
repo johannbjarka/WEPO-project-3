@@ -12,8 +12,7 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 		} else if ($scope.password === '') {
 			$scope.errorMessage = 'You must fill in a password';
 		} else {
-			console.log(LoginFactory);
-			LoginFactory.login($scope.userName, $scope.password)
+			LoginFactory.login($scope.username, $scope.password)
 			.then(function(response) {
 				$location.path('/evals/' + $scope.username);
 			}, function(response) {
