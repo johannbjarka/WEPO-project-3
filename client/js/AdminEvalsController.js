@@ -1,5 +1,6 @@
-angular.module('Evaluator').controller('StudentEvalsController', ['$scope', '$location', '$routeParams', 'AdminFactory' ,'toastr',
+angular.module('Evaluator').controller('AdminEvalsController', ['$scope', '$location', '$routeParams', 'AdminFactory' ,'toastr',
 	function ($scope, $location, $routeParams, AdminFactory) {
+
 	$scope.showEvals = function() {
 		AdminFactory.getEvals()
 		.then(function(response) {
@@ -10,5 +11,4 @@ angular.module('Evaluator').controller('StudentEvalsController', ['$scope', '$lo
 	};
 
 	$scope.showEvals();
-
 }]);
