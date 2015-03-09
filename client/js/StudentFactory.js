@@ -1,10 +1,10 @@
 angular.module('Evaluator').factory('StudentFactory', [
 	'$http',
 	'API',
-	function($http) {
+	function($http, API) {
 		return {
 			getStudentEvals: function( ) {
-				return $http.get('API' + '/my/evaluations')
+				return $http.get(API + '/evaluations')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -12,7 +12,7 @@ angular.module('Evaluator').factory('StudentFactory', [
 				});
 			},
 			getStudentEval: function(courseID, semesterID, evalID) {
-				return $http.get('API' + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID)
+				return $http.get(API + 'courses/:courseID/:semesterID/evaluations/:evalID')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -20,7 +20,7 @@ angular.module('Evaluator').factory('StudentFactory', [
 				});
 			},
 			addStudentEval: function(courseID, semesterID, evalID, questionID, teacherSSN, value) {
-				return $http.post('API' + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID, {
+				return $http.post(API + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID, {
 					QuestionID: questionID,
 					TeacherSSN: teacherSSN,
 					Value: value
@@ -31,7 +31,7 @@ angular.module('Evaluator').factory('StudentFactory', [
 				});
 			},
 			getTeachers: function(courseID, semesterID) {
-				return $http.get('API' + 'courses/' + courseID + '/'+ semesterID + '/teachers')
+				return $http.get(API + 'courses/' + courseID + '/'+ semesterID + '/teachers')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {

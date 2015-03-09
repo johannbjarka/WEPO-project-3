@@ -16,9 +16,11 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 			.then(function(response) {
 				$location.path('/evals/' + $scope.username);
 			}, function(response) {
-				console.log('Failed to log in');
+				$scope.errorMessage = 'Failed to login';
 			});
 
 		}
 	};
+
+	
 }]);

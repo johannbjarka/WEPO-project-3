@@ -8,7 +8,7 @@ angular.module('Evaluator').factory('LoginFactory', [
 					user: user,
 					pass: pass
 				}).success(function(response) {
-					$http.defaults.headers.common.Authorization = 'Basic' + response.Token;
+					$http.defaults.headers.common.Authorization = 'Basic ' + response.Token;
 					return response;
 				}).error(function(response) {
 					return response;

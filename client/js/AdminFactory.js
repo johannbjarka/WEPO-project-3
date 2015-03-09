@@ -1,10 +1,10 @@
 angular.module('Evaluator').factory('AdminFactory', [
 	'$http',
 	'API',
-	function($http) {
+	function($http, API) {
 		return {
 			getEvalTemplates: function() {
-				return $http.get('API' + '/evaluationtemplates')
+				return $http.get(API + '/evaluationtemplates')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -12,7 +12,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			getEvalTemplate: function(ID) {
-				return $http.get('API' + '/evaluationtemplates/' + ID)
+				return $http.get(API + '/evaluationtemplates/' + ID)
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -20,7 +20,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			addEvalTemplate: function(title, titleEN, introText, introTextEN, courseQuestions, teacherQuestions ) {
-				return $http.post('API' + '/evaluations', {
+				return $http.post(API + '/evaluations', {
 					Title: title,
 					TitleEN: titleEN,
 					IntroText: introText,
@@ -34,7 +34,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			getEvals: function( ) {
-				return $http.get('API' + '/evaluations')
+				return $http.get(API + '/evaluations')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -42,7 +42,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			getEval: function(ID) {
-				return $http.get('API' + '/evaluations/' + ID)
+				return $http.get(API + '/evaluations/' + ID)
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -50,7 +50,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			addEval: function(startDate, endDate) {
-				return $http.post('API' + '/evaluations', {
+				return $http.post(API + '/evaluations', {
 					StartDate: startDate,
 					EndDate: endDate
 				}).success(function(response) {
@@ -60,7 +60,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			getStudentEvals: function( ) {
-				return $http.get('API' + '/my/evaluations')
+				return $http.get(API + '/my/evaluations')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -68,7 +68,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			getStudentEval: function(courseID, semesterID, evalID) {
-				return $http.get('API' + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID)
+				return $http.get(API + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID)
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -76,7 +76,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			addStudentEval: function(courseID, semesterID, evalID, questionID, teacherSSN, value) {
-				return $http.post('API' + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID, {
+				return $http.post(API + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID, {
 					QuestionID: questionID,
 					TeacherSSN: teacherSSN,
 					Value: value
@@ -87,7 +87,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 				});
 			},
 			getTeachers: function(courseID, semesterID) {
-				return $http.get('API' + 'courses/' + courseID + '/'+ semesterID + '/teachers')
+				return $http.get(API + 'courses/' + courseID + '/'+ semesterID + '/teachers')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
