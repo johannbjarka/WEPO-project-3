@@ -3,15 +3,7 @@ angular.module('Evaluator').factory('StudentFactory', [
 	'API',
 	function($http, API) {
 		return {
-			getStudentEvals: function( ) {
-				return $http.get(API + '/evaluations')
-				.success(function(response) {
-					return response;
-				}).error(function(response) {
-					return response;
-				});
-			},
-			getStudentEval: function(courseID, semesterID, evalID) {
+			getStudentEval: function(course, semester, evalID) {
 				return $http.get(API + 'courses/:courseID/:semesterID/evaluations/:evalID')
 				.success(function(response) {
 					return response;
@@ -32,6 +24,22 @@ angular.module('Evaluator').factory('StudentFactory', [
 			},
 			getTeachers: function(courseID, semesterID) {
 				return $http.get(API + 'courses/' + courseID + '/'+ semesterID + '/teachers')
+				.success(function(response) {
+					return response;
+				}).error(function(response) {
+					return response;
+				});
+			},
+			getMyCourses: function() {
+				return $http.get(API + '/my/courses')
+				.success(function(response) {
+					return response;
+				}).error(function(response) {
+					return response;
+				});
+			},
+			getMyEvals: function() {
+				return $http.get(API + '/my/evaluations')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {

@@ -14,7 +14,12 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 		} else {
 			LoginFactory.login($scope.username, $scope.password)
 			.then(function(response) {
-				$location.path('/evals/' + $scope.username);
+				if($scope.username === 'admin') {
+					$location.path('/evals/admin/' + $scope.username);
+				}
+				else {
+					$location.path('/evals/' + $scope.username);
+				}
 			}, function(response) {
 				$scope.errorMessage = 'Failed to login';
 			});
@@ -22,5 +27,5 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 		}
 	};
 
-	
+
 }]);

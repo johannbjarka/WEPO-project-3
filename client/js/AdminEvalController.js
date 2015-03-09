@@ -1,4 +1,4 @@
-angular.module('Evaluator').controller('EvalController', ['$scope', '$location', '$routeParams', 'toastr',
+angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$location', '$routeParams', 'AdminFactory' , 'toastr',
 	function ($scope, $location, $routeParams, toastr, AdminFactory) {
 	
 	$scope.getEvaluations = function() {
