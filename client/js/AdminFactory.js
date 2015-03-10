@@ -11,8 +11,8 @@ angular.module('Evaluator').factory('AdminFactory', [
 					return response;
 				});
 			},
-			getTemplate: function(ID) {
-				return $http.get(API + '/evaluationtemplates/' + ID)
+			getTemplate: function(id) {
+				return $http.get(API + '/evaluationtemplates/:id')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {
@@ -41,8 +41,8 @@ angular.module('Evaluator').factory('AdminFactory', [
 					return response;
 				});
 			},
-			getEval: function(ID) {
-				return $http.get(API + '/evaluations/' + ID)
+			getEval: function(id) {
+				return $http.get(API + '/evaluations/id')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {

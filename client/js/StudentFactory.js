@@ -11,8 +11,8 @@ angular.module('Evaluator').factory('StudentFactory', [
 					return response;
 				});
 			},
-			addStudentEval: function(courseID, semesterID, evalID, questionID, teacherSSN, value) {
-				return $http.post(API + 'courses/' + courseID + '/'+ semesterID + '/evaluations/' + evalID, {
+			addStudentEval: function(course, semester, evalID, questionID, teacherSSN, value) {
+				return $http.post(API + 'courses/:course/:semester/evaluations/:evalID', {
 					QuestionID: questionID,
 					TeacherSSN: teacherSSN,
 					Value: value
@@ -22,8 +22,8 @@ angular.module('Evaluator').factory('StudentFactory', [
 					return response;
 				});
 			},
-			getTeachers: function(courseID, semesterID) {
-				return $http.get(API + 'courses/' + courseID + '/'+ semesterID + '/teachers')
+			getTeachers: function(course, semester) {
+				return $http.get(API + 'courses/:course/:semester/teachers')
 				.success(function(response) {
 					return response;
 				}).error(function(response) {

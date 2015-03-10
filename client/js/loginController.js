@@ -19,7 +19,6 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 					$location.path('/evals/' + $scope.username);
 				}
 			}, function(response) {
-				console.log(response);
 				$scope.errorMessage = 'Failed to login';
 			});
 		}
