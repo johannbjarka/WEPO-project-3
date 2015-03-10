@@ -14,7 +14,7 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 			LoginFactory.login($scope.username, $scope.password)
 			.then(function(response) {
 				if(response.data.User.Role === 'admin') {
-					$location.path('/evals/secure/' + $scope.username);
+					$location.path('/admin/');
 				} else {
 					$location.path('/evals/' + $scope.username);
 				}
