@@ -1,0 +1,69 @@
+
+
+<div class="row">
+	<div class="alert alert-danger" ng-cloak ng-show="errorMessage != ''">
+		{{errorMessage}}
+	</div>
+	<label for="titleEN" class="control-label">Title</label>
+	<input type="text" class="form-control" id="titleEN" name="titleEN" ng-model="TitleEN"/>
+	<label for="title" class="control-label">Native title</label>
+	<input type="text" class="form-control" id="title" name="title" ng-model="Title"/>
+	<label for="introTextEN" class="control-label">Introduction</label>
+	<input type="text" class="form-control" id="introTextEN" name="introTextEN" ng-model="IntroTextEN"/>
+	<label for="introText" class="control-label">Native introduction</label>
+	<input type="text" class="form-control" id="introText" name="introText" ng-model="IntroText"/>
+</div>
+
+<div class="row">
+	<h3>Course questions:</h3>
+	<div ng-repeat="(key, item) in CourseQuestions">
+		<span>Question:</span>
+		<input type="text" class="form-control" ng-model="item.TextEN">
+		<span>Native question:</span>
+		<input type="text" class="form-control" ng-model="item.Text">
+		<div ng-if="item.Type !== 'text'">
+			<ul class="list-unstyled">
+				<li ng-repeat="answer in item.Answers">
+					<span>Answer:</span>
+					<input type="text" class="form-control" ng-model="answer.TextEN">
+					<span>Native answer:</span>
+					<input type="text" class="form-control" ng-model="answer.Text">
+				</li>
+			</ul>
+			<button class="btn btn-default" ng-click="addCourseQuestionAnswer(key)">+</button>
+		</div>
+		<hr>
+	</div>
+	<button class="btn btn-default" ng-click="addCourseTextQuestion()">Add text field</button>
+	<button class="btn btn-default" ng-click="addCourseSingleQuestion()">Add single select</button>
+	<button class="btn btn-default" ng-click="addCourseMultiQuestion()">Add multi select</button>
+</div>
+
+<div class="row">
+	<h3>Teacher questions:</h3>
+	<div ng-repeat="(key, item) in TeacherQuestions">
+		<span>Question:</span>
+		<input type="text" class="form-control" ng-model="item.TextEN">
+		<span>Native question:</span>
+		<input type="text" class="form-control" ng-model="item.Text">
+		<div ng-if="item.Type !== 'text'">
+			<ul class="list-unstyled">
+				<li ng-repeat="answer in item.Answers">
+					<span>Answer:</span>
+					<input type="text" class="form-control" ng-model="answer.TextEN">
+					<span>Native answer:</span>
+					<input type="text" class="form-control" ng-model="answer.Text">
+				</li>
+			</ul>
+			<button class="btn btn-default" ng-click="addTeacherQuestionAnswer(key)">+</button>
+		</div>
+		<hr>
+	</div>
+	<button class="btn btn-default" ng-click="addTeacherTextQuestion()">Add text field</button>
+	<button class="btn btn-default" ng-click="addTeacherSingleQuestion()">Add single select</button>
+	<button class="btn btn-default" ng-click="addTeacherMultiQuestion()">Add multi select</button>
+</div>
+
+<div class="row">
+	<button class="btn btn-default" ng-click="createTemplate()">Create</button>
+</div>

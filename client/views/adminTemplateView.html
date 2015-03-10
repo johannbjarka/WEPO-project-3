@@ -1,0 +1,45 @@
+
+<div class="row">
+	<dl class="dl-horizontal">
+		<dt>Title:</dt>
+		<dd>{{Title}}</dd>
+		<dt>Native title:</dt>
+		<dd>{{TitleEN}}</dd>
+		<dt>Introduction:</dt>
+		<dd>{{IntroTextEN}}</dd>
+		<dt>Native introduction:</dt>
+		<dd>{{IntroText}}</dd>
+	</dl>
+</div>
+
+<div class="row">
+	<h3>Course questions:</h3>
+	<dl class="dl-horizontal" ng-repeat="item in CourseQuestions">
+		<dt>Type:</dt>
+		<dd>{{item.Type}}</dd>
+		<dt>Question:</dt>
+		<dd>{{item.TextEN}}</dd>
+		<dt>Native question:</dt>
+		<dd>{{item.Text}}</dd>
+		<ol ng-if="item.Answers !== undefined">
+			<li ng-repeat="answer in item.Answers">Text: {{answer.TextEN}}, Native text: {{answer.Text}}</li>
+		</ol>
+		<hr>
+	</dl>
+</div>
+
+<div class="row">
+	<h3>Teacher questions:</h3>
+	<dl class="dl-horizontal" ng-repeat="item in TeacherQuestions">
+		<dt>Type:</dt>
+		<dd>{{item.Type}}</dd>
+		<dt>Question:</dt>
+		<dd>{{item.TextEN}}</dd>
+		<dt>Native question:</dt>
+		<dd>{{item.Text}}</dd>
+		<ol ng-if="item.Answers !== undefined">
+			<li ng-repeat="answer in item.Answers">Text: {{answer.TextEN}}, Native text: {{answer.Text}}</li>
+		</ol>
+		<hr>
+	</dl>
+</div>
