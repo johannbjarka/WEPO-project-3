@@ -10,9 +10,9 @@
 
 				<div class="form-group">
 					<label for="username" class="control-label">Username</label>
-					<input type="text" class="form-control" id="username" name="username" ng-model="username" />
+					<input type="text" class="form-control" id="username" name="username" ng-model="username" autofocus/>
 					<label for="password" class="control-label">Password</label>
-					<input type="password" class="form-control" id="password" name="password" ng-model="password" />
+					<input type="password" class="form-control" id="password" name="password" ng-model="password" ng-enter="login()" />
 				</div>
 				<button type="button" class="btn btn-default" ng-click="login()">Enter</button>
 			</div>

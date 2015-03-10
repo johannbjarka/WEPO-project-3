@@ -3,7 +3,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 	'API',
 	function($http, API) {
 		return {
-			getEvalTemplates: function() {
+			getTemplates: function() {
 				return $http.get(API + '/evaluationtemplates')
 				.success(function(response) {
 					return response;
@@ -11,7 +11,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 					return response;
 				});
 			},
-			getEvalTemplate: function(ID) {
+			getTemplate: function(ID) {
 				return $http.get(API + '/evaluationtemplates/' + ID)
 				.success(function(response) {
 					return response;
@@ -19,8 +19,8 @@ angular.module('Evaluator').factory('AdminFactory', [
 					return response;
 				});
 			},
-			addEvalTemplate: function(title, titleEN, introText, introTextEN, courseQuestions, teacherQuestions ) {
-				return $http.post(API + '/evaluations', {
+			addTemplate: function(title, titleEN, introText, introTextEN, courseQuestions, teacherQuestions) {
+				return $http.post(API + '/evaluationtemplates', {
 					Title: title,
 					TitleEN: titleEN,
 					IntroText: introText,
@@ -33,7 +33,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 					return response;
 				});
 			},
-			getEvals: function( ) {
+			getEvals: function() {
 				return $http.get(API + '/evaluations')
 				.success(function(response) {
 					return response;

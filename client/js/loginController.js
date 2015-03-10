@@ -8,25 +8,20 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 	$scope.login = function() {
 		if ($scope.username === '') {
 			$scope.errorMessage = 'You must fill in a username';
-
 		} else if ($scope.password === '') {
 			$scope.errorMessage = 'You must fill in a password';
 		} else {
 			LoginFactory.login($scope.username, $scope.password)
 			.then(function(response) {
-				if($scope.username === 'admin') {
+				if(response.data.User.Role === 'admin') {
 					$location.path('/evals/secure/' + $scope.username);
-				}
-				else {
+				} else {
 					$location.path('/evals/' + $scope.username);
 				}
 			}, function(response) {
 				console.log(response);
 				$scope.errorMessage = 'Failed to login';
 			});
-
 		}
 	};
-
-
 }]);
