@@ -1,4 +1,4 @@
-var Evaluator = angular.module('Evaluator', ['ngRoute', 'ngAnimate', 'toastr']);
+var Evaluator = angular.module('Evaluator', ['ngRoute', 'ngAnimate', 'toastr', 'ui.bootstrap']);
 angular.module("Evaluator").constant("API", "http://localhost:19358/api/v1");
 
 Evaluator.directive('ngEnter', function () {
