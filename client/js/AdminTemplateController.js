@@ -25,6 +25,10 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 		$scope.CourseQuestions[id].Answers.push({TextEN: '', Text: ''});
 	};
 
+	$scope.removeCourseQuestion = function(id) {
+		$scope.CourseQuestions.splice(id, 1);
+	};
+
 	$scope.addTeacherTextQuestion = function() {
 		$scope.TeacherQuestions.push({TextEN: '', Text: '', Type: 'text'});
 	};
@@ -41,22 +45,31 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 		$scope.TeacherQuestions[id].Answers.push({TextEN: '', Text: ''});
 	};
 
+	$scope.removeTeacherQuestion = function(id) {
+		$scope.TeacherQuestions.splice(id, 1);
+	};
 
 	$scope.createTemplate = function() {
-		AdminFactory.addTemplate(
-			$scope.Title,
-			$scope.TitleEN,
-			$scope.IntroText,
-			$scope.IntroTextEN,
-			$scope.CourseQuestions,
-			$scope.TeacherQuestions
-		).then(function() {
-			$location.path('/admin');
-		}, function() {
-			$scope.errorMessage += 'Failed to post';
-		});
+		if($scope.form.$valid) {
+			AdminFactory.addTemplate(
+				$scope.Title,
+				$scope.TitleEN,
+				$scope.IntroText,
+				$scope.IntroTextEN,
+				$scope.CourseQuestions,
+				$scope.TeacherQuestions
+			).then(function() {
+				$location.path('/admin');
+			}, function(response) {
+				$scope.errorMessage = 'Server error: ' + response.status + ', ' + response.statusText;
+			});
+		}
+		else {
+			$scope.errorMessage = 'Some fields are empty';
+		}
 	}
 
+	//Only used for viewing the template.
 	$scope.getTemplate = function(id) {
 		AdminFactory.getTemplate(id)
 		.then(function(response) {

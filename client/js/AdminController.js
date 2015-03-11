@@ -9,6 +9,9 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 
 	$scope.evalName = '';
 
+	$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+	$scope.format = $scope.formats[2];
+
 	$scope.showEvals = function() {
 		AdminFactory.getEvals()
 		.then(function(response) {
@@ -76,9 +79,6 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 
 		$scope.openedEd = true;
 	};
-
-	$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-	$scope.format = $scope.formats[2];
 
 	$scope.showEvals();
 	$scope.showTemplates();
