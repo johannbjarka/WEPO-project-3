@@ -2,6 +2,9 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 	function ($scope, $location, $routeParams, AdminFactory, toastr) {
 	$scope.errorMessage = '';
 	$scope.evalErrorMessage = '';
+	$scope.templateID = '';
+	$scope.startDate = '';
+	$scope.endDate = '';
 
 	$scope.evaluations = [];
 	$scope.templates = [];
@@ -31,34 +34,26 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 	};
 
 	$scope.createEvaluation = function() {
-		console.log($scope.templates);
-		console.log($scope.StartDate);
-		console.log($scope.EndDate);
-		console.log($scope.templateID);
 		AdminFactory.addEval(
 			$scope.templateID,
-			$scope.StartDate,
-			$scope.EndDate
-		).then(function(response) {
+  			$scope.startDate,
+  			$scope.endDate
+		).then(function() {
 			$scope.showEvals();
-		}, function(response) {
+		}, function() {
 			$scope.errorMessage = 'Failed to create evaluation';
 		});
 	};
 
-	$scope.optionChanged = function(ID) {
-        $scope.templateNotSelected = !ID;
-    };
-
 	$scope.today = function() {
-		$scope.StartDate = new Date();
-		$scope.EndDate = new Date();
+		$scope.startDate = new Date();
+		$scope.endDate = new Date();
 	};
 	$scope.today();
 
 	$scope.clear = function () {
-		$scope.StartDate = null;
-		$scope.EndDate = null;
+		$scope.startDate = null;
+		$scope.endDate = null;
 	};
 
 	$scope.toggleMin = function() {

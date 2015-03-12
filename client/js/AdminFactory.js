@@ -49,6 +49,7 @@ angular.module('Evaluator').factory('AdminFactory', [
 					return response;
 				});
 			},
+
 			addEval: function(templateID, startDate, endDate) {
 				return $http.post(API + '/evaluations', {
 					TemplateID: templateID,
