@@ -1,0 +1,24 @@
+
+<div class ="row">
+	<div class="alert alert-danger" ng-cloak ng-show="errorMessage != ''">
+		{{errorMessage}}
+	</div>
+</div>
+<div class="row">
+	<h3>Evaluations</h3>
+
+	<div class="col-md-8">
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>Evaluation Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="eval in evaluations">
+					<td><a href="#/studentEvals/{{username}}/{{eval.TitleEN}}">{{eval.TitleEN}}</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

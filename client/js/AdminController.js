@@ -2,6 +2,9 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 	function ($scope, $location, $routeParams, AdminFactory) {
 	$scope.errorMessage = '';
 	$scope.evalErrorMessage = '';
+	$scope.templateID = '';
+	$scope.startDate = '';
+	$scope.endDate = '';
 
 	$scope.evaluations = [];
 	$scope.templates = [];
@@ -25,6 +28,19 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 			$scope.errorMessage += 'Failed to get templates';
 		});
 	};
+
+	$scope.createEvaluation = function() {
+		AdminFactory.addEval(
+			$scope.templateID,
+  			$scope.startDate,
+  			$scope.endDate
+		).then(function() {
+			$location.path('/admin');
+			// Maybe a success message here
+		}, function() {
+			$scope.errorMessage += 'Failed to get templates';
+		});
+	}
 
 	$scope.showEvals();
 	$scope.showTemplates();
