@@ -1,5 +1,5 @@
 angular.module('Evaluator').controller('AdminController', ['$scope', '$location', '$routeParams', 'AdminFactory' ,'toastr',
-	function ($scope, $location, $routeParams, AdminFactory) {
+	function ($scope, $location, $routeParams, AdminFactory, toastr) {
 	$scope.errorMessage = '';
 	$scope.evalErrorMessage = '';
 	$scope.templateID = '';
@@ -8,8 +8,12 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 
 	$scope.evaluations = [];
 	$scope.templates = [];
+	$scope.templateID = 0;
 
 	$scope.evalName = '';
+
+	$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+	$scope.format = $scope.formats[2];
 
 	$scope.showEvals = function() {
 		AdminFactory.getEvals()
@@ -40,7 +44,41 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 		}, function() {
 			$scope.errorMessage += 'Failed to get templates';
 		});
-	}
+	};
+
+	$scope.optionChanged = function(ID) {
+        $scope.templateNotSelected = !ID;
+    };
+
+	$scope.today = function() {
+		$scope.StartDate = new Date();
+		$scope.EndDate = new Date();
+	};
+	$scope.today();
+
+	$scope.clear = function () {
+		$scope.StartDate = null;
+		$scope.EndDate = null;
+	};
+
+	$scope.toggleMin = function() {
+		$scope.minDate = $scope.minDate ? null : new Date();
+	};
+	$scope.toggleMin();
+
+	$scope.openSd = function($event) {
+		$event.preventDefault();
+		$event.stopPropagation();
+
+		$scope.openedSd = true;
+	};
+
+	$scope.openEd = function($event) {
+		$event.preventDefault();
+		$event.stopPropagation();
+
+		$scope.openedEd = true;
+	};
 
 	$scope.showEvals();
 	$scope.showTemplates();

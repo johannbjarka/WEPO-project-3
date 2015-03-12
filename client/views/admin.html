@@ -61,8 +61,31 @@
 					{{evalErrorMessage}}
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" id="evalName" name="evalName" ng-model="evalName" />
-					<button type="button" class="btn btn-default" ng-click="showEvals()">Create</button>
+					<h5>Choose template</h5>
+					<select ng-model="templateID" ng-options="template.ID as template.TitleEN for template in templates" class="form-control"></select>
+					<h5>Choose start date</h5>
+				    <div class="row">
+				        <div class="col-md-12">
+				            <p class="input-group">
+				              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="StartDate" is-open="openedSd" min-date="minDate" ng-required="true" close-text="Close" />
+				              <span class="input-group-btn">
+				                <button type="button" class="btn btn-default" ng-click="openSd($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+				              </span>
+				            </p>
+				        </div>
+				    </div>
+				    <h5>Choose end date</h5>
+				    <div class="row">
+				        <div class="col-md-12">
+				            <p class="input-group">
+				              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="EndDate" is-open="openedEd" min-date="minDate" ng-required="true" close-text="Close" />
+				              <span class="input-group-btn">
+				                <button type="button" class="btn btn-default" ng-click="openEd($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+				              </span>
+				            </p>
+				        </div>
+				    </div>
+					<button type="button" class="btn btn-default" ng-click="createEvaluation()">Create</button>
 				</div>
 			</div>
 		</div>
