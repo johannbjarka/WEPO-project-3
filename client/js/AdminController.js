@@ -46,10 +46,6 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 		});
 	};
 
-	$scope.optionChanged = function(ID) {
-        $scope.templateNotSelected = !ID;
-    };
-
 	$scope.today = function() {
 		$scope.StartDate = new Date();
 		$scope.EndDate = new Date();
