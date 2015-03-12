@@ -39,22 +39,21 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
   			$scope.startDate,
   			$scope.endDate
 		).then(function() {
-			$location.path('/admin');
-			// Maybe a success message here
+			$scope.showEvals();
 		}, function() {
-			$scope.errorMessage += 'Failed to get templates';
+			$scope.errorMessage = 'Failed to create evaluation';
 		});
 	};
 
 	$scope.today = function() {
-		$scope.StartDate = new Date();
-		$scope.EndDate = new Date();
+		$scope.startDate = new Date();
+		$scope.endDate = new Date();
 	};
 	$scope.today();
 
 	$scope.clear = function () {
-		$scope.StartDate = null;
-		$scope.EndDate = null;
+		$scope.startDate = null;
+		$scope.endDate = null;
 	};
 
 	$scope.toggleMin = function() {
