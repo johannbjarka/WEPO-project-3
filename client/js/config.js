@@ -7,8 +7,7 @@ angular.module('Evaluator').config(['$routeProvider',
 		.when('/admin', { templateUrl: 'views/admin.html', controller: 'AdminController' })
 		.when('/admin/template', { templateUrl: 'views/adminTemplateForm.html', controller: 'AdminTemplateController'})
 		.when('/admin/template/:id', { templateUrl: 'views/adminTemplateView.html', controller: 'AdminTemplateController'})
-		.when('/admin/evaluation', { templateUrl: 'views/der.html', controller: 'AdminEvaluationController'})
-		.when('/admin/evaluation/:id', { templateUrl: 'views/der.html', controller: 'AdminEvaluationController'})
+		.when('/admin/evaluation/:id', { templateUrl: 'views/adminEval.html', controller: 'AdminEvalController'})
 		.otherwise({
 			redirectTo: '/login'
 		});
