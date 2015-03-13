@@ -67,7 +67,7 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 		else {
 			$scope.errorMessage = 'Some fields are empty';
 		}
-	}
+	};
 
 	//Only used for viewing the template.
 	$scope.getTemplate = function(id) {
@@ -82,7 +82,7 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 		}, function(response) {
 			$scope.errorMessage += 'Failed load template';
 		});
-	}
+	};
 
 	if($routeParams.id !== undefined) {
 		$scope.getTemplate($routeParams.id);

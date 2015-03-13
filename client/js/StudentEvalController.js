@@ -1,10 +1,10 @@
 angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$location', '$routeParams','StudentFactory' ,
 	function ($scope, $location, $routeParams, StudentFactory) {
-	
+
 	$scope.evaluations = [];
 	$scope.errorMessage = '';
 	$scope.teachers = [];
-	
+
 	$scope.showEval = function() {
 		StudentFactory.getStudentEval($routeParams.CourseID, $routeParams.Semester, $routeParams.ID)
 		.then(function(response) {
@@ -21,7 +21,7 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 			console.log(response.data);
 			$scope.teachers = response.data;
 		}, function (response) {
-			$scope.errorMessage = 'Failed to get data'
+			$scope.errorMessage = 'Failed to get data';
 		});
 
 	};
