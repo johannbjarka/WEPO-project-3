@@ -1,2 +1,29 @@
-.backgroundchat {
+
+ol.list-fancy {
+	counter-reset: li;
+	margin-left: 0;
+	padding-left: 0;
+	
+	& > li {
+		position: relative;
+		margin: 0 0 6px 2em;
+		padding-top: 15px;
+		list-style: none;
+		border-top: 2px solid rgb(90, 90, 90);
+		
+		&:before {
+			content: counter(li);
+			counter-increment: li;
+			position: absolute;
+			top: -2px;
+			left: -2em;
+			width: 2em;
+			padding: 4px;
+			border-top: 2px solid rgb(102, 102, 102);
+			color: rgb(255, 255, 255);
+			background: rgb(102, 102, 102);
+			font-weight: bold;
+			text-align: center;
+		}
+	}
 }
