@@ -45,7 +45,7 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="eval in evaluations">
-					<td><a href="admin/evaluation">{{eval.TemplateTitleEN}}</a></td>
+					<td><a href="#/admin/evaluation/{{eval.ID}}">{{eval.TemplateTitleEN}}</a></td>
 					<td>{{eval.StartDate | date:'medium'}}</td>
 					<td>{{eval.EndDate | date:'medium'}}</td>
 					<td>{{eval.Status}}</td>

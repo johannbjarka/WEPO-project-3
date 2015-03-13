@@ -1,16 +1,27 @@
-<h3>{{currentEval}}</h3>
+<h3>{{TemplateTitleEN}}</h3>
+<div class ="row">
+	<div class="alert alert-danger" ng-cloak ng-show="errorMessage != ''">
+		{{errorMessage}}
+	</div>
+</div>
 <div class="col-md-12">
-	<div class="col-md-6">
-		<div class="alert alert-danger" ng-cloak ng-show="errorMessage != ''">
-			{{errorMessage}}
-		</div>
-	</div>
-
-	<div class="col-md-3">
-
-	</div>
-
-	<div class="col-md-3">
-
-	</div>
+	<ul>
+		<li ng-repeat="course in Courses">
+			<div class="row">
+				<h4>
+				Results from {{course.CourseID}} {{Course.CourseNameEN}} for {{course.Semester}}
+				</h4>
+			</div>
+			<ul>
+				<li ng-repeat="question in Courses.Questions">
+					<h5>{{question.TextEN}}</h5>
+					<p ng-if="question.TeacherSSN !== null"> Results for: {{question.TeacherSSN}}</p>
+					<ul ng-if="question.TextResults !== null">
+						<li ng-repeat="text in question.TextResults">{{text}}</li>
+					</ul>
+					<canvas ng-if="question.OptionsResults !== null" id="bar" class="chart chart-bar" data="question.data" labels="question.labels"></canvas>
+				</li>
+			</ul>
+		</li>
+	</ul>
 </div>
