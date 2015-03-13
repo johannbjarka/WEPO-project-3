@@ -34,6 +34,9 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 	};
 
 	$scope.createEvaluation = function() {
+		$scope.startDate.setHours(0,0,0,0);
+		$scope.startDate = new Date($scope.startDate.getTime() - 60000);
+		$scope.endDate.setHours(23,59,59,0);
 		AdminFactory.addEval(
 			$scope.templateID,
   			$scope.startDate,

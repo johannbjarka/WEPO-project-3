@@ -16,7 +16,7 @@ angular.module('Evaluator').controller('LoginController', ['$scope', '$location'
 				if(response.data.User.Role === 'admin') {
 					$location.path('/admin/');
 				} else {
-					$location.path('/evals/' + $scope.username);
+					$location.path('/evals/');
 				}
 			}, function(response) {
 				$scope.errorMessage = 'Failed to login';
