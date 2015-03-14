@@ -45,7 +45,7 @@
 				<ng-form name="cQuestions">
 					<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || cQuestions.cTextEN.$touched) && cQuestions.cTextEN.$error.required}">
 						<label for="cQuestionEN{{key}}" class="control-label col-sm-3">Question</label>
-				<		 <div class="col-sm-9">
+						 <div class="col-sm-9">
 							<input type="text" class="form-control" id="cQuestionEN{{key}}" name="cTextEN" ng-model="item.TextEN" required>
 							<span ng-show="(form.$submitted || cQuestions.cTextEN.$touched) && cQuestions.cTextEN.$error.required" class="glyphicon glyphicon-remove form-control-feedback"></span>
 						</div>
