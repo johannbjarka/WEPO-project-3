@@ -11,7 +11,7 @@ angular.module('Evaluator').factory('StudentFactory', [
 					return response;
 				});
 			},
-			addStudentEval: function(course, semester, evalID, questionID, teacherSSN, value) {
+			answerStudentEval: function(course, semester, evalID, questionID, value, teacherSSN) {
 				return $http.post(API + '/courses/' + course + '/'+ semester + '/evaluations/' + evalID, {
 					QuestionID: questionID,
 					TeacherSSN: teacherSSN,
