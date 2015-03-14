@@ -1,29 +1,127 @@
 
-ol.list-fancy {
+@headerlistcolor: rgb(51, 122, 183);
+@deletelistcolor: rgb(217, 83, 79);
+@answerlistcolor: rgb(140, 140, 140);
+
+.glyphinfo(@height: 0px; @bgColor: #000000) {
+	position: absolute;
+	top: @height;
+	left: 0;
+	width: 2em;
+	padding: 4px;
+	color: #FFFFFF;
+	text-align: center;
+	font-family: 'Glyphicons Halflings';
+	background-color: @bgColor;
+}
+
+.glyphbutton(@height: 0px; @bgColor: @answerlistcolor; @hoverColor: darken(@answerlistcolor, 10%)) {
+	.glyphinfo(@height; @bgColor);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: pointer;
+	transition: opacity 0.25s, background-color 0.3s;
+	opacity: 0;
+
+	&:hover {
+		background-color: @hoverColor;
+	}
+}
+
+ol.list-header {
 	counter-reset: li;
-	margin-left: 0;
+	margin: 0;
 	padding-left: 0;
-	
+
 	& > li {
 		position: relative;
-		margin: 0 0 6px 2em;
-		padding-top: 15px;
+		padding: 10px 10px 10px 2.6em;
 		list-style: none;
-		border-top: 2px solid rgb(90, 90, 90);
-		
+		border-top: 2px solid @headerlistcolor;
+
+		.move-up {
+			.glyphbutton(26px; @headerlistcolor; darken(@headerlistcolor, 20%));
+		}
+
+		.move-down {
+			.glyphbutton(auto; @headerlistcolor; darken(@headerlistcolor, 20%));
+			bottom: 0;
+		}
+
+		.add-button {
+			margin-left: 25px;
+		}
+
+		&:hover {
+			.move-up, .move-down {
+				opacity: 1;
+			}
+		}
+
+		&:first-child .move-up, &:last-child .move-down {
+			display: none;
+		}
+
 		&:before {
+			.glyphinfo(0; @headerlistcolor);
 			content: counter(li);
 			counter-increment: li;
-			position: absolute;
-			top: -2px;
-			left: -2em;
-			width: 2em;
-			padding: 4px;
-			border-top: 2px solid rgb(102, 102, 102);
-			color: rgb(255, 255, 255);
-			background: rgb(102, 102, 102);
 			font-weight: bold;
-			text-align: center;
+			font-family: inherit;
+		}
+
+		&:after {
+			.glyphinfo(0; @headerlistcolor);
+			left: 2em;
+		}
+
+		&.question_text:after {
+			content: "\e047";
+		}
+
+		&.question_single:after {
+			content: "\e165";
+		}
+
+		&.question_multiple:after {
+			content: "\e067";
+		}
+	}
+}
+
+@media (min-width: 768px) {
+	ol.list-header > li {
+		padding-left: 4.6em;
+	}
+}
+
+ol.list-answers {
+	counter-reset: li;
+	margin: 0;
+	padding-left: 0;
+
+	.delete-button {
+		.glyphbutton(28px; @answerlistcolor; @deletelistcolor);
+	}
+
+	& > li {
+		position: relative;
+		padding: 10px 10px 10px 2.6em;
+		list-style: none;
+		border-top: 2px solid @answerlistcolor;
+
+		&:before {
+			.glyphinfo(0; @answerlistcolor);
+			content: counter(li);
+			counter-increment: li;
+			font-weight: bold;
+			font-family: inherit;
+		}
+
+		&:hover .delete-button {
+			opacity: 1;
 		}
 	}
 }

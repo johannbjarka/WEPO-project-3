@@ -21,12 +21,28 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 		$scope.CourseQuestions.push({TextEN: '', Text: '', Type: 'multiple', Answers: [{TextEN: '', Text: ''}]});
 	};
 
+	$scope.removeCourseQuestion = function(id) {
+		$scope.CourseQuestions.splice(id, 1);
+	};
+
+	$scope.moveCourseQuestion = function(id, shift) {
+		var temp = $scope.CourseQuestions[id];
+		if(shift === 1 && id + 1 < $scope.CourseQuestions.length) {
+			$scope.CourseQuestions[id] = $scope.CourseQuestions[id+1];
+			$scope.CourseQuestions[id+1] = temp;
+		}
+		else if(shift === -1 && id > 0) {
+			$scope.CourseQuestions[id] = $scope.CourseQuestions[id-1];
+			$scope.CourseQuestions[id-1] = temp;
+		}
+	};
+
 	$scope.addCourseQuestionAnswer = function(id) {
 		$scope.CourseQuestions[id].Answers.push({TextEN: '', Text: ''});
 	};
 
-	$scope.removeCourseQuestion = function(id) {
-		$scope.CourseQuestions.splice(id, 1);
+	$scope.removeCourseQuestionAnswer = function(id, answerID) {
+		$scope.CourseQuestions[id].Answers.splice(answerID, 1);
 	};
 
 	$scope.addTeacherTextQuestion = function() {

@@ -32,16 +32,16 @@
 	</div>
 
 	<h3>Course questions</h3>
-	<div class="panel panel-default">
+	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-default" ng-click="addCourseTextQuestion()">Text question</button>
-				<button type="button" class="btn btn-default" ng-click="addCourseSingleQuestion()">Single select</button>
-				<button type="button" class="btn btn-default" ng-click="addCourseMultiQuestion()">Multi select</button>
+				<button type="button" class="btn btn-default" ng-click="addCourseTextQuestion()"><span class="glyphicon glyphicon-font"></span>	Text question</button>
+				<button type="button" class="btn btn-default" ng-click="addCourseSingleQuestion()"><span class="glyphicon glyphicon-record"></span>	Single select</button>
+				<button type="button" class="btn btn-default" ng-click="addCourseMultiQuestion()"><span class="glyphicon glyphicon-check"></span> Multi select</button>
 			</div>
 		</div>
-		<div class="panel-body">
-			<div ng-repeat="(key, item) in CourseQuestions">
+		<ol class="list-header">
+			<li ng-repeat="(key, item) in CourseQuestions" class="question_{{item.Type}}">
 				<ng-form name="cQuestions">
 					<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || cQuestions.cTextEN.$touched) && cQuestions.cTextEN.$error.required}">
 						<label for="cQuestionEN{{key}}" class="control-label col-sm-3">Question</label>
@@ -59,33 +59,39 @@
 					</div>
 
 					<div ng-if="item.Type !== 'text'">
-						<ol class="list-fancy">
-							<li ng-repeat="(key, answer) in item.Answers">
+						<ol class="list-answers">
+							<li ng-repeat="(aKey, answer) in item.Answers">
 								<ng-form name="cAnswers">
 									<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || cAnswers.answerEN.$touched) && cAnswers.answerEN.$error.required}">
-										<label for="cAnswerEN{{key}}" class="control-label col-sm-3">Answer</label>
+										<label for="cAnswerEN{{aKey}}" class="control-label col-sm-3">Answer</label>
 										<div class="col-sm-9">
-											<input type="text" class="form-control" id="cAnswerEN{{key}}" name="answerEN" ng-model="answer.TextEN" required>
+											<input type="text" class="form-control" id="cAnswerEN{{aKey}}" name="answerEN" ng-model="answer.TextEN" required>
 											<span ng-show="(form.$submitted || cAnswers.answerEN.$touched) && cAnswers.answerEN.$error.required" class="glyphicon glyphicon-remove form-control-feedback"></span>
 										</div>
 									</div>
 									<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || cAnswers.answer.$touched) && cAnswers.answer.$error.required}">
-										<label for="cAnswer{{key}}" class="control-label col-sm-3">Native answer</label>
+										<label for="cAnswer{{aKey}}" class="control-label col-sm-3">Native answer</label>
 										<div class="col-sm-9">
-											<input type="text" class="form-control" id="cAnswer{{key}}" name="answer" ng-model="answer.Text" required>
+											<input type="text" class="form-control" id="cAnswer{{aKey}}" name="answer" ng-model="answer.Text" required>
 											<span ng-show="(form.$submitted || cAnswers.answer.$touched) && cAnswers.answer.$error.required" class="glyphicon glyphicon-remove form-control-feedback"></span>
 										</div>
 									</div>
+									<div class="delete-button" ng-click="removeCourseQuestionAnswer(key, aKey)">&#57364;</button>
 								</ng-form>
 							</li>
 						</ol>
-						<button type="button" class="btn btn-default" ng-click="addCourseQuestionAnswer(key)">+</button>
 					</div>
-					<button type="button" class="btn btn-default" ng-click="removeCourseQuestion(key)">REMOVE</button>
-					<hr>
+
+					<div class="row">
+						<div class="col-sm-offset-3 col-sm-9">
+						<button type="button" class="btn btn-primary add-button" ng-if="item.Type !== 'text'" ng-click="addCourseQuestionAnswer(key)">Add answer</button>
+						<button type="button" class="btn btn-danger pull-right" ng-click="removeCourseQuestion(key)">Remove</button>
+					</div>
+					<span class="move-up" ng-click="moveCourseQuestion(key, -1)">&#57619;</span>
+					<span class="move-down" ng-click="moveCourseQuestion(key, 1)">&#57620;</span>
 				</ng-form>
-			</div>
-		</div>
+			</li>
+		</ol>
 	</div>
 
 	<h3>Teacher questions</h3>
