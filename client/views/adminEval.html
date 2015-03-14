@@ -19,7 +19,7 @@
 					<ul ng-if="question.TextResults !== null">
 						<li ng-repeat="text in question.TextResults">{{text}}</li>
 					</ul>
-					<canvas ng-if="question.OptionsResults !== null" id="bar" class="chart chart-bar" data="question.data" labels="question.labels"></canvas>
+					<canvas ng-if="question.OptionsResults !== null" class="chart chart-bar" data="question.data" labels="question.labels"></canvas>
 				</li>
 			</ul>
 		</li>

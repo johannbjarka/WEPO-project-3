@@ -11,14 +11,14 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 		}, function(response) {
 			$scope.errorMessage = 'Failed to load evaluation';
 		});
-	}
+	};
 
-	for(q in $scope.Courses.Questions) {
+	for(var q in $scope.Courses.Questions) {
 		var labels = [];
 		var data = [];
 		
 		if(q.OptionsResults !== null) {
-			for(o in q.OptionsResults) {
+			for(var o in q.OptionsResults) {
 				labels.push(o.AnswerTextEN);
 				data.push(o.Count);
 			}
