@@ -67,7 +67,7 @@
 					</div>
 					<div class="form-group has-feedback" ng-class="{'has-error': (evalForm.$submitted || evalForm.startDate.$touched) && (evalForm.startDate.$error.date)}">
 						<label for="startDate" class="control-label">Choose start date</label>
-				    	<div class="input-group">
+						<div class="input-group">
 							<input type="text" class="form-control" id="startDate" name="startDate" ng-model="newEval.startDate" ng-change="setSd()" datepicker-popup="{{format}}" is-open="openedSd" min-date="minDate" ng-required="true" close-text="Close">
 							<span class="input-group-btn">
 								<button type="button" class="btn btn-default" ng-click="openSd($event)"><i class="glyphicon glyphicon-calendar"></i></button>

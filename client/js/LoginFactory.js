@@ -1,6 +1,4 @@
-angular.module('Evaluator').factory('LoginFactory', [
-	'$http',
-	'API',
+angular.module('Evaluator').factory('LoginFactory', ['$http', 'API',
 	function($http, API) {
 		return {
 			login: function(user, pass) {

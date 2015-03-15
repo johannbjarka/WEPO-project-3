@@ -1,6 +1,4 @@
-angular.module('Evaluator').factory('AdminFactory', [
-	'$http',
-	'API',
+angular.module('Evaluator').factory('AdminFactory', ['$http', 'API',
 	function($http, API) {
 		return {
 			getTemplates: function() {

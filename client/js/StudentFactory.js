@@ -1,6 +1,4 @@
-angular.module('Evaluator').factory('StudentFactory', [
-	'$http',
-	'API',
+angular.module('Evaluator').factory('StudentFactory', ['$http', 'API',
 	function($http, API) {
 		return {
 			getStudentEval: function(course, semester, evalID) {
