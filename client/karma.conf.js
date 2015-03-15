@@ -14,7 +14,20 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: [
+    files : [
+      'bower_components/angular/angular.js',
+      'bower_components/angular-route/angular-route.js',
+      'bower_components/angular-animate/angular-animate.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-toastr/dist/angular-toastr.js',
+      'bower_components/angular-bootstrap/ui-bootstrap.js',
+      'bower_components/Chart.js/Chart.js',
+      'bower_components/angular-chart.js/dist/angular-chart.js',
+      'js/app.js',
+      'js/config.js',
+      'js/AdminController.js',
+      'js/LoginController.js',
+      'js/*.js',
       'test/*.js'
     ],
 
@@ -33,7 +46,18 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+
+
+    preprocessors: {
+      'js/*.js': ['coverage']
+    },
+
+
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
 
 
     // web server port
@@ -55,7 +79,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
