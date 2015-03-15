@@ -4,12 +4,12 @@ angular.module('Evaluator').directive('evaluationQuestion', function () {
 		replace: true,
 		templateUrl: 'views/evaluationQuestion.html',
 		scope: {
-			ngQuestion: '=',
-			ngIndex: '@',
-			ngFunc: '&',
+			ngModel: '=',
+			ngAnswers: '=',
 		},
 		link: function (scope, element, attr) {
 			scope.$watch('answer', function(value) {
+				//console.log(ngModel);
 			});
 		}
 	};

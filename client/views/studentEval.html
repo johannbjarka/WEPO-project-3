@@ -1,15 +1,16 @@
 <h2>{{title}} - kennslumat</h2>
 <div class="row">
 	<h3>Course questions:</h3>
-	<div ng-repeat="question in courseQuestions">
-		<evaluation-question ng-question="question" ng-index="{{$index}}" ng-func="answerCourseQuestion()"/>
+	<div ng-repeat="(key, question) in courseQuestions">
+		<evaluation-question ng-model="question" ng-answers="courseAnswers[key]"></evaluation-question>
 	</div>
+	<button type="button" ng-click="submit()"> hahha</button>
 
 	<h3>Teacher questions:</h3>
-	<div ng-repeat="teacher in teachers">
+	<div ng-repeat="(tKey , teacher) in teachers">
 		<h4>{{teacher.FullName}}</h4>
-		<div ng-repeat="question2 in teacherQuestions">
-			<evaluation-question ng-question="question2" ng-index="{{$index}}" ng-func="answerTeacherQuestion(value, ID)"/>
+		<div ng-repeat="(qKey, question) in teacherQuestions">
+			<evaluation-question ng-model="question" ng-answers="teachersAnswers[tKey][qKey]"></evaluation-question>
 		</div>
 	</div>
 </div>

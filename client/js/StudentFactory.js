@@ -9,12 +9,10 @@ angular.module('Evaluator').factory('StudentFactory', ['$http', 'API',
 					return response;
 				});
 			},
-			answerStudentEval: function(course, semester, evalID, questionID, value, teacherSSN) {
-				return $http.post(API + '/courses/' + course + '/'+ semester + '/evaluations/' + evalID, {
-					QuestionID: questionID,
-					TeacherSSN: teacherSSN,
-					Value: value
-				}).success(function(response) {
+
+			answerStudentEval: function(course, semester, evalID, answers) {
+				return $http.post(API + '/courses/' + course + '/'+ semester + '/evaluations/' + evalID, answers)
+				.success(function(response) {
 					return response;
 				}).error(function(response) {
 					return response;

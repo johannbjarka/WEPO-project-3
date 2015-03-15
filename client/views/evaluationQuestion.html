@@ -1,25 +1,24 @@
 <div class="panel panel-success">
 	<div class="panel-heading">
-		<h3 class="panel-title">{{ngQuestion.TextEN}}</h3>
+		<h3 class="panel-title">{{ngModel.TextEN}}</h3>
 	</div>
 	<div class="panel-body">
-		<div ng-if="ngQuestion.Type === 'text'">
-			<textarea class="form-control" rows="5" ng-model="answer" placeholder="your answer..."></textarea>
+		<div ng-if="ngModel.Type === 'text'">
+			<textarea class="form-control" rows="5" placeholder="your answer..." ng-model="ngAnswers.Value"></textarea>
 		</div>
-
-		<div ng-if="ngQuestion.Type === 'single'">
-			<div ng-repeat="answer in ngQuestion.Answers" class="radio">
+		<div ng-if="ngModel.Type === 'single'">
+			<div ng-repeat="answer in ngModel.Answers" class="radio">
 				<label>
-					<input type="radio" name="qAnswers{{ngIndex}}" ng-click="ngFunc(1, 1)">
+					<input type="radio" value="{{$index + 1}}" ng-model="ngAnswers.Value" name="qAnswers{{ngAnswers.QuestionID}}{{ngAnswers.TeacherSSN}}">
 					{{answer.TextEN}}
 				</label>
 			</div>
 		</div>
 
-		<div ng-if="ngQuestion.Type === 'multiple'">
-			<div ng-repeat="answer in ngQuestion.Answers" class="checkbox">
+		<div ng-if="ngModel.Type === 'multiple'">
+			<div ng-repeat="answer in ngModel.Answers" class="checkbox">
 				<label>
-					<input type="checkbox" name="qAnswers{{ngIndex}}" ng-click="ngFunc(ngIndex + 1, $index + 1)">
+					<input type="checkbox" ng-false-value="0" ng-true-value="{{$index + 1}}" ng-model="ngAnswers.Value" name="qAnswers{{ngAnswers.QuestionID}}">
 					{{answer.TextEN}}
 				</label>
 			</div>
