@@ -1,10 +1,15 @@
-<h4>{{title}} - kennslumat</h4>
+<h2>{{title}} - kennslumat</h2>
 <div class="row">
 	<h3>Course questions:</h3>
-	<dl class="dl-horizontal">
-		<ul ng-repeat="question in courseQuestions">
-			<evaluation-question ng-model="question"></evaluation-question>	
-		</ul>
-		<hr>
-	</dl>
+	<div ng-repeat="question in courseQuestions">
+		<evaluation-question ng-question="question" ng-index="{{$index}}" ng-func="answerCourseQuestion()"/>
+	</div>
+
+	<h3>Teacher questions:</h3>
+	<div ng-repeat="teacher in teachers">
+		<h4>{{teacher.FullName}}</h4>
+		<div ng-repeat="question2 in teacherQuestions">
+			<evaluation-question ng-question="question2" ng-index="{{$index}}" ng-func="answerTeacherQuestion(value, ID)"/>
+		</div>
+	</div>
 </div>

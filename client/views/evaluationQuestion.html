@@ -1,3 +1,28 @@
-<div>	
-	<li ng-repeat="answer in question.Answers"><input type ="radio"  ng-click="answerCourseQuestion($index + 1, answer.ID)" >{{answer.Text}}</br></li>
+<div class="panel panel-success">
+	<div class="panel-heading">
+		<h3 class="panel-title">{{ngQuestion.TextEN}}</h3>
+	</div>
+	<div class="panel-body">
+		<div ng-if="ngQuestion.Type === 'text'">
+			<textarea class="form-control" rows="5" ng-model="answer" placeholder="your answer..."></textarea>
+		</div>
+
+		<div ng-if="ngQuestion.Type === 'single'">
+			<div ng-repeat="answer in ngQuestion.Answers" class="radio">
+				<label>
+					<input type="radio" name="qAnswers{{ngIndex}}" ng-click="ngFunc(1, 1)">
+					{{answer.TextEN}}
+				</label>
+			</div>
+		</div>
+
+		<div ng-if="ngQuestion.Type === 'multiple'">
+			<div ng-repeat="answer in ngQuestion.Answers" class="checkbox">
+				<label>
+					<input type="checkbox" name="qAnswers{{ngIndex}}" ng-click="ngFunc(ngIndex + 1, $index + 1)">
+					{{answer.TextEN}}
+				</label>
+			</div>
+		</div>
+	</div>
 </div>

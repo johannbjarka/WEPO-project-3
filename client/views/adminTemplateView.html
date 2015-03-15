@@ -1,45 +1,49 @@
 
-<div class="row">
-	<dl class="dl-horizontal">
-		<dt>Title:</dt>
-		<dd>{{Title}}</dd>
-		<dt>Native title:</dt>
-		<dd>{{TitleEN}}</dd>
-		<dt>Introduction:</dt>
-		<dd>{{IntroTextEN}}</dd>
-		<dt>Native introduction:</dt>
-		<dd>{{IntroText}}</dd>
-	</dl>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			{{TitleEN}}
+			({{Title}})
+		</h3>
+	</div>
+	<div class="panel-body">
+		<div>{{IntroTextEN}}</div>
+		<div>{{IntroText}}</div>
+	</div>
 </div>
 
-<div class="row">
-	<h3>Course questions:</h3>
-	<dl class="dl-horizontal" ng-repeat="item in CourseQuestions">
-		<dt>Type:</dt>
-		<dd>{{item.Type}}</dd>
-		<dt>Question:</dt>
-		<dd>{{item.TextEN}}</dd>
-		<dt>Native question:</dt>
-		<dd>{{item.Text}}</dd>
-		<ol ng-if="item.Answers !== undefined">
-			<li ng-repeat="answer in item.Answers">Text: {{answer.TextEN}}, Native text: {{answer.Text}}</li>
-		</ol>
-		<hr>
-	</dl>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Course questions</h3>
+	</div>
+	<ol class="list-header">
+		<li ng-repeat="item in CourseQuestions" class="question_{{item.Type}}">
+			<h5>{{item.TextEN}}</h5>
+			<h5>{{item.Text}}</h5>
+			<ol ng-if="item.Answers !== undefined" class="list-answers">
+				<li ng-repeat="answer in item.Answers">
+					<div>{{answer.TextEN}}</div>
+					<div>{{answer.Text}}</div>
+				</li>
+			</ol>
+		</li>
+	</ol>
 </div>
 
-<div class="row">
-	<h3>Teacher questions:</h3>
-	<dl class="dl-horizontal" ng-repeat="item in TeacherQuestions">
-		<dt>Type:</dt>
-		<dd>{{item.Type}}</dd>
-		<dt>Question:</dt>
-		<dd>{{item.TextEN}}</dd>
-		<dt>Native question:</dt>
-		<dd>{{item.Text}}</dd>
-		<ol ng-if="item.Answers !== undefined">
-			<li ng-repeat="answer in item.Answers">Text: {{answer.TextEN}}, Native text: {{answer.Text}}</li>
-		</ol>
-		<hr>
-	</dl>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Teacher questions</h3>
+	</div>
+	<ol class="list-header">
+		<li ng-repeat="item in TeacherQuestions" class="question_{{item.Type}}">
+			<h5>{{item.TextEN}}</h5>
+			<h5>{{item.Text}}</h5>
+			<ol ng-if="item.Answers !== undefined" class="list-answers">
+				<li ng-repeat="answer in item.Answers">
+					<div>{{answer.TextEN}}</div>
+					<div>{{answer.Text}}</div>
+				</li>
+			</ol>
+		</li>
+	</ol>
 </div>
