@@ -6,7 +6,7 @@ angular.module('Evaluator').controller('StudentEvalsController', ['$scope', '$lo
 	$scope.showEvals = function() {
 		StudentFactory.getMyEvals()
 		.then(function(response) {
-			$scope.evaluations = response.data;
+			console.log($scope.evaluations = response.data);
 		}, function(response) {
 			$scope.errorMessage = 'Failed to get data';
 		});

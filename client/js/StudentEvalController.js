@@ -66,7 +66,10 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 			if (!isEmpty) {
 				$scope.answerQuestion($scope.teacherAnswers[i]);
 			}
-			console.log(isEmpty ? 'EMPTY' : 'NOT');
+		}
+		if($scope.errorMessage === '')
+		{
+			$location.path('/evals');
 		}
 	};
 
