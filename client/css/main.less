@@ -17,9 +17,6 @@
 
 .glyphbutton(@height: 0px; @bgColor: @answerlistcolor; @hoverColor: darken(@answerlistcolor, 10%)) {
 	.glyphinfo(@height; @bgColor);
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 	cursor: pointer;
 	transition: opacity 0.25s, background-color 0.3s;
@@ -42,7 +39,7 @@ ol.list-header {
 		border-top: 2px solid @headerlistcolor;
 
 		.move-up {
-			.glyphbutton(26px; @headerlistcolor; darken(@headerlistcolor, 20%));
+			.glyphbutton(28px; @headerlistcolor; darken(@headerlistcolor, 20%));
 		}
 
 		.move-down {

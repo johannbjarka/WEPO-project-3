@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
+  var autoprefixer = require('autoprefixer-core');
 
   grunt.initConfig({
-
     jshint: {
       src: ['client/js/*.js'],
       options: {
@@ -26,6 +26,16 @@ module.exports = function(grunt) {
         }
        }
     },
+    watch: {
+      scripts: {
+        files: '**/*.js',
+        tasks: ['jshint'],
+      },
+      css: {
+        files: ['**/*.less'],
+        tasks: ['less', 'postcss', 'cssmin'],
+      },
+    },
     concat: {
       options: {
         separator: ';',
@@ -43,11 +53,19 @@ module.exports = function(grunt) {
       }
     },
     less: {
-	  build: {
+    build: {
         files: {
           'client/dist/css/main.css': 'client/css/main.less'
         }
       }
+    },
+    postcss: {
+        options: {
+            processors: [
+              autoprefixer({ browsers: ['last 2 version'] }).postcss
+            ]
+        },
+        dist: { src: 'client/dist/css/*.css' }
     },
     cssmin: {
       build: {
@@ -66,13 +84,15 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-postcss');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask( 'default', [ 'jshint', 'concat', 'uglify', 'less', 'cssmin', 'karma' ] );
+  grunt.registerTask( 'default', [ 'jshint', 'concat', 'uglify', 'less', 'postcss', 'cssmin', 'karma' ] );
 };
 
