@@ -6,8 +6,6 @@
 	</div>
 </div>
 
-<canvas class="chart chart-bar" data="data" labels="labels"></canvas> 
-
 <div class="col-md-12">
 	<ul>
 		<li ng-repeat="course in Courses">
@@ -21,9 +19,13 @@
 					<h5>{{question.TextEN}}</h5>
 					<p ng-if="question.TeacherSSN !== null"> Results for: {{question.TeacherSSN}}</p>
 					<ul ng-if="question.TextResults !== null">
-						<li ng-repeat="text in question.TextResults">{{text}}</li>
+						<li ng-repeat="text in question.TextResults track by $index">{{text}}</li>
 					</ul>
-					<canvas ng-if="question.OptionsResults !== null" class="chart chart-bar" data="question.data" labels="question.labels"></canvas> 
+					<div class="row">
+						<div class="col-md-6" ng-if="question.OptionsResults !== null">
+							<canvas class="chart chart-bar" data="question.data" labels="question.labels"></canvas> 
+						</div>
+					</div>
 				</li>
 			</ul>
 		</li>
