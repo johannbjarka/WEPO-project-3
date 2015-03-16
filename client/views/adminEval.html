@@ -7,27 +7,30 @@
 </div>
 
 <div class="col-md-12">
-	<ul>
-		<li ng-repeat="course in Courses">
-			<div class="row">
-				<h4>
-				Results from {{course.CourseID}} {{course.CourseNameEN}} for {{course.Semester}}
-				</h4>
-			</div>
-			<ul>
+	<ol class="list-header">
+		<li ng-repeat="course in courses">
+			<h4>
+				Results from {{course.id}} - {{course.nameEN}} - {{course.semester}}
+			</h4>
+			<ul class="list-unstyled">
+
 				<li ng-repeat="question in course.Questions">
 					<h5>{{question.TextEN}}</h5>
-					<p ng-if="question.TeacherSSN !== null"> Results for: {{question.TeacherSSN}}</p>
+
+					<p ng-if="question.TeacherSSN !== null">
+						Results for: {{question.TeacherSSN}}
+					</p>
+
 					<ul ng-if="question.TextResults !== null">
 						<li ng-repeat="text in question.TextResults track by $index">{{text}}</li>
 					</ul>
 					<div class="row">
 						<div class="col-md-6" ng-if="question.OptionsResults !== null">
-							<canvas class="chart chart-bar" data="question.data" labels="question.labels"></canvas> 
+							<canvas class="chart chart-bar" data="question.data" labels="question.labels"></canvas>
 						</div>
 					</div>
 				</li>
 			</ul>
 		</li>
-	</ul>
+	</ol>
 </div>
