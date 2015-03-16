@@ -7,17 +7,13 @@
 </div>
 
 <div class="col-md-12">
-	<ul>
-		<li ng-repeat="course in Courses">
-			<div class="row">
-				<h4>
-				Results from {{course.CourseID}} {{course.CourseNameEN}} for {{course.Semester}}
-				</h4>
-			</div>
-			<ul>
-				<li ng-repeat="question in course.Questions">
-					<h5>{{question.TextEN}}</h5>
-					<p ng-if="question.TeacherSSN !== null"> Results for: {{question.TeacherSSN}}</p>
+	<p>
+		<button class="btn btn-default" ng-click="openClose()">Expand / Collapse all</button>
+	</p>
+	<accordion close-others="false">
+		<accordion-group heading="Results from {{course.CourseID}} {{course.CourseNameEN}} for {{course.Semester}}" is-open="isRootOpen" ng-repeat="course in Courses">
+			<accordion close-others="false">
+				<accordion-group heading="{{question.TextEN}} {{question.TeacherName}}" is-open="isOpen" ng-repeat="question in course.Questions">
 					<ul ng-if="question.TextResults !== null">
 						<li ng-repeat="text in question.TextResults track by $index">{{text}}</li>
 					</ul>
@@ -26,8 +22,8 @@
 							<canvas class="chart chart-bar" data="question.data" labels="question.labels"></canvas> 
 						</div>
 					</div>
-				</li>
-			</ul>
-		</li>
-	</ul>
+				</accordion-group>
+			</accordion>
+		</accordion-group>
+	</accordion>
 </div>

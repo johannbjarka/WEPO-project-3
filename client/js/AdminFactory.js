@@ -59,6 +59,14 @@ angular.module('Evaluator').factory('AdminFactory', ['$http', 'API',
 					return response;
 				});
 			},
+			getTeachers: function(course, semester) {
+				return $http.get(API + '/courses/' + course + '/'+ semester + '/teachers')
+				.success(function(response) {
+					return response;
+				}).error(function(response) {
+					return response;
+				});
+			},
 		};
 	}
 ]);
