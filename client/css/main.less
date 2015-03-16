@@ -15,6 +15,24 @@
 	background-color: @bgColor;
 }
 
+.customOrderedList {
+	counter-reset: li;
+	margin: 0;
+	padding-left: 0;
+
+	& > li {
+		position: relative;
+		list-style: none;
+
+		&:before {
+			content: counter(li);
+			counter-increment: li;
+			font-weight: bold;
+			font-family: inherit;
+		}
+	}
+}
+
 .glyphbutton(@height: 0px; @bgColor: @answerlistcolor; @hoverColor: darken(@answerlistcolor, 10%)) {
 	.glyphinfo(@height; @bgColor);
 	user-select: none;
@@ -39,11 +57,11 @@ ol.list-header {
 		border-top: 2px solid @headerlistcolor;
 
 		.move-up {
-			.glyphbutton(28px; @headerlistcolor; darken(@headerlistcolor, 20%));
+			.glyphbutton(28px; @headerlistcolor; darken(@headerlistcolor, 10%));
 		}
 
 		.move-down {
-			.glyphbutton(auto; @headerlistcolor; darken(@headerlistcolor, 20%));
+			.glyphbutton(auto; @headerlistcolor; darken(@headerlistcolor, 10%));
 			bottom: 0;
 		}
 

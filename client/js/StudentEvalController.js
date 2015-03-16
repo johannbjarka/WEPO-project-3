@@ -8,10 +8,17 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 	$scope.title = $routeParams.CourseID;
 	$scope.intro = '';
 	$scope.introN = '';
-	$scope.teachersAnswers = [];
 	$scope.teacherAnswers = [];
 	$scope.courseAnswers = [];
 
+	$scope.getTeachers = function() {
+		StudentFactory.getTeachers($routeParams.CourseID, $routeParams.Semester)
+		.then(function (response) {
+			$scope.teachers = response.data;
+		}, function (response) {
+			$scope.errorMessage = 'Failed to get data';
+		});
+	};
 
 	$scope.getEval = function() {
 		StudentFactory.getStudentEval($routeParams.CourseID, $routeParams.Semester, $routeParams.ID)
@@ -24,12 +31,11 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 				$scope.courseAnswers.push({QuestionID: $scope.courseQuestions[i].ID, TeacherSSN: '', Value: ''});
 			}
 			for(i = 0; i < $scope.teachers.length; i++) {
+				var teacherAns = [];
 				for(j = 0; j < $scope.teacherQuestions.length; j++) {
-					$scope.teacherAnswers.push({QuestionID: $scope.teacherQuestions[j].ID, TeacherSSN: $scope.teachers[i].SSN, Value: ''});
+					teacherAns.push({QuestionID: $scope.teacherQuestions[j].ID, TeacherSSN: $scope.teachers[i].SSN, Value: ''});
 				}
-
-				$scope.teachersAnswers.push($scope.teacherAnswers);
-				$scope.teacherAnswers = [];
+				$scope.teacherAnswers.push(teacherAns);
 			}
 
 
@@ -38,7 +44,7 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 		});
 	};
 
-	$scope.answerQuestion = function (answers) {
+	$scope.answerQuestion = function(answers) {
 		StudentFactory.answerStudentEval($routeParams.CourseID, $routeParams.Semester, $routeParams.ID, answers)
 		.then(function (response) {
 		}, function (response) {
@@ -46,38 +52,22 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 		});
 	};
 
-	$scope.getTeachers = function() {
-		StudentFactory.getTeachers($routeParams.CourseID, $routeParams.Semester)
-		.then(function (response) {
-			$scope.teachers = response.data;
-		}, function (response) {
-			$scope.errorMessage = 'Failed to get data';
-		});
-	};
-
-	$scope.saveEval = function () {
-		
+	$scope.saveEval = function() {
+		var i, j;
 		$scope.answerQuestion($scope.courseAnswers);
-
-		for(var i = 0; i < $scope.teachersAnswers.length; i++) {
+		for(i = 0; i < $scope.teacherAnswers.length; i++) {
 			var isEmpty = true;
-			for(var j = 0; j < $scope.teachersAnswers[i].length; j++) {
-				if($scope.teachersAnswers[i][j].Value !== '') {
+			for(j = 0; j < $scope.teacherAnswers[i].length; j++) {
+				if($scope.teacherAnswers[i][j].Value !== '') {
 					isEmpty = false;
 					break;
 				}
 			}
 			if (!isEmpty) {
-				$scope.answerQuestion($scope.teachersAnswers[i]);
+				$scope.answerQuestion($scope.teacherAnswers[i]);
 			}
-				
+			console.log(isEmpty ? 'EMPTY' : 'NOT');
 		}
-
-		// hætta að sýna þetta eval ?
-	};
-
-	$scope.submit = function() {
-		$scope.saveEval();
 	};
 
 	$scope.getTeachers();
