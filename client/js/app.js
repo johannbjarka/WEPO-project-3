@@ -1,8 +1,8 @@
 var Evaluator = angular.module('Evaluator', ['ngRoute', 'ngAnimate', 'toastr', 'ui.bootstrap', 'chart.js']);
 angular.module("Evaluator").constant("API", "http://localhost:19358/api/v1");
 
-angular.module('Evaluator').run(['$http', '$window',
-	function ($http, $window) {
+angular.module('Evaluator').run(['$http', '$window', '$location',
+	function ($http, $window, $location) {
 		var storage = $window.localStorage;
 		if(storage['LastUpdated'] !== undefined) {
 			var cacheTime = 30 * 60000;
@@ -12,8 +12,11 @@ angular.module('Evaluator').run(['$http', '$window',
 				storage['LastUpdated'] = new Date();
 			}
 			else {
+			
 				storage['Token'] = '';
 				storage['User'] = [];
+				$http.defaults.headers.common.Authorization = undefined;
+				$location.path('/login');
 			}
 		}
 	}
