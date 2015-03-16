@@ -29,6 +29,7 @@ describe("HomeCtrl login", function(){
 	});
 	
 });
+
 */
 /*
 describe('LoginController', function() {
@@ -37,6 +38,22 @@ describe('LoginController', function() {
 	var scope;
 
 	var mockLoginFactory = {
+
+		login: function(user, pass) {
+			return {
+				success: function(fn) {
+					//
+					//
+					return {
+						error: function(errorfn) {
+							//
+							//
+						}
+					};
+				}
+			};
+		}
+
 		login: function(user, pass) {
 			return ({
 				user: "kalli",
@@ -48,6 +65,8 @@ describe('LoginController', function() {
 			});
 		}
 	};
+
+
 
 	var mockLocation = {
 
@@ -77,23 +96,49 @@ describe('LoginController', function() {
 	
 });
 */
+
 describe('LoginController', function() {
 	
 	var controller;
 	var scope;
+
+	var mockLoginFactory = {
+
+		login: function(user, pass) {
+			return {
+				success: function(fn) {
+					//
+					//
+					return {
+						error: function(errorfn) {
+							//
+							//
+						}
+					};
+				}
+			};
+		}
+	};
+
+	var mockLocation = {
+
+	};
+
+	var mockRoutes = {
+
+	};
 	
 	beforeEach(module('Evaluator'));
 	beforeEach(inject(function ($controller, $rootScope) {
 		scope = $rootScope.$new();
 		controller = $controller('LoginController', {
 			$scope: scope,
+			$location: mockLocation,
+			$routeParams: mockRoutes,
+			LoginFactory: mockLoginFactory
 		});
 	}));
 	
-	it("should have a blank error message to start with", function() {
-		expect(scope.errorMessage).toEqual("");
-	});
-
 	it("should give an error message when username is empty", function() {
 		scope.username = "";
 		scope.login();
@@ -106,10 +151,17 @@ describe('LoginController', function() {
 		scope.login();
 		expect(scope.errorMessage).toEqual("You must fill in a password");
 	});
-	
+	/*
+	it("should return correct message when successful", function() {
+		scope.username = "kalli";
+		scope.password = "123";
+		scope.login();
+		expect(mockLoginFactory.login).toBe("login successful");
+	});
+	*/
 });
-/*
 
+/*
 describe('AdminTemplateController', function() {
 
 	var controller;
@@ -127,7 +179,7 @@ describe('AdminTemplateController', function() {
 
 		spyOn(mockAdminFactory, "addTemplate");
 
-		controller = $controller({
+		controller = $controller('AdminTemplateController', {
 			$scope: scope,
 			AdminFactory: mockAdminFactory
 		});
@@ -146,17 +198,66 @@ describe('AdminTemplateController', function() {
 });
 */
 
-/*
+
 describe('AdminController', function() {
-	var AdminController;
+	var controller;
+	var scope;
+
+	/*
+	var mockAdminFactory = {
+		addTemplate: function(title, titleEN, introText, introTextEN, courseQuestions, teacherQuestions) {
+
+		},
+
+		getEvals: function() {
+			return {
+				success: function(fn) {
+					//
+					//
+					return {
+						error: function(errorfn) {
+							//
+							//
+						}
+					};
+				}
+			};
+		}
+	};
+	*/
 
 	beforeEach(module('Evaluator'));
-	beforeEach(inject(function($injector) {
-		AdminController = $injector.get('AdminController');
+	beforeEach(inject(function ($controller, $rootScope) {
+		scope = $rootScope.$new();
+		controller = $controller('AdminController', {
+			$scope: scope,
+			//AdminFactory: mockAdminFactory
+		});
 	}));
 
-	it('should not create evaluation when dates are undefined', function() {
-		expect(AdminController.$scope.createEvaluation()).not.toHaveBeenCalled();
+	it('should set end date equal to start date if end date is earlier than start date', function() {
+		scope.newEval = {
+			errorMessage: '',
+			startDate: new Date(),
+			endDate: new Date(),
+			templateID: 0
+		};
+		scope.newEval.startDate.setHours(10, 0, 0, 0);
+		scope.newEval.endDate.setHours(0, 0, 0, 0);
+		scope.setSd();
+		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
+	});
+
+	it('should set end date equal to start date if end date is earlier than start date', function() {
+		scope.newEval = {
+			errorMessage: '',
+			startDate: new Date(),
+			endDate: new Date(),
+			templateID: 0
+		};
+		scope.newEval.startDate.setHours(10, 0, 0, 0);
+		scope.newEval.endDate.setHours(0, 0, 0, 0);
+		scope.setEd();
+		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
 	});
 });
-*/

@@ -12,8 +12,6 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 		templateID: 0
 	};
 
-	$scope.minDate = new Date();
-
 	$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
 	$scope.format = $scope.formats[2];
 
