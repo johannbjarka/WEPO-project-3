@@ -4,10 +4,13 @@
 	<div class="alert alert-danger" ng-cloak ng-show="errorMessage != ''">
 		{{errorMessage}}
 	</div>
+	<h4 ng-cloak ng-show="!courses.length">
+		No one has answered this evaluation yet.
+	</h4>
 </div>
 
 <div>
-	<button class="btn btn-default" ng-click="openClose()">Expand / Collapse all</button>
+	<button ng-cloak ng-show="courses.length" class="btn btn-default" ng-click="openClose()">Expand / Collapse all</button>
 	<div ng-repeat="course in courses" class="panel panel-default">
 		<div class="panel-heading">
 			<h2 class="panel-title">Results from {{course.id}} {{course.nameEN}} for {{course.semester}}</h2>

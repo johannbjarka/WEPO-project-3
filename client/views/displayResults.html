@@ -1,8 +1,10 @@
 <div>
 	<ul ng-if="ngModel.TextResults !== null">
-		<li ng-repeat="text in ngModel.TextResults track by $index">{{text}}</li>
+		<li ng-if="text !== ''" ng-repeat="text in ngModel.TextResults track by $index">{{text}}</li>
 	</ul>
-	<div ng-if="ngModel.OptionsResults !== null">
-		<canvas class="chart chart-bar" data="ngModel.data" labels="ngModel.labels"></canvas>
+	<div class="row">
+		<div class="col-md-6" ng-if="ngModel.OptionsResults !== null">
+			<canvas class="chart chart-bar" data="ngModel.data" labels="ngModel.labels"></canvas>
+		</div>
 	</div>
 </div>
