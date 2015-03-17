@@ -1,140 +1,46 @@
-
-/*
-describe("HomeCtrl login", function(){
-
-	var ctrl, scope;
-	var fakeChat = {
-		logonUser: function(username){
-			return username == "dabs";},
-			getRoomList: function(){ return ["lobby", "smu"]; }
-	};
-	beforeEach(module("Evaluator"));
-
-	beforeEach(inject(function ($controller, $rootScope) {
-		$scope = $rootScope.$new();
-		ctrl = $controller("LoginController", {
-		$scope: $scope,
-		ChatBackend: fakeChat });
-	}));
-
-	it("should request a list of rooms if username is available", function(){
-		// Arrange:
-		var user = "dabs";
-		scope.username = user;
-		// Act:
-		ctrl.doLogin();
-		// Assert:
-		expect(fakeChat.getRoomList)
-		.toHaveBeenCalledWith(user);
-	});
-
-});
-
-*/
-/*
 describe('LoginController', function() {
 
 	var controller;
 	var scope;
+	var location;
 
 	var mockLoginFactory = {
-
-		login: function(user, pass) {
-			return {
-				success: function(fn) {
-					//
-					//
-					return {
-						error: function(errorfn) {
-							//
-							//
-						}
-					};
+		login: function(user, pass)  {
+			var promise = {
+				then: function(success, error){
+					if(user === "carl13" && pass === "12345" ){
+						success({data: {
+							Token: "",
+							User: {
+								Role: "student",
+							}
+						}});
+					}
+					else if(user === "admin" && pass ==="12345"){
+						success({data: {
+							Token: "",
+							User: {
+								Role: "admin",
+							}
+						}});
+					}
+					else{
+						error({Error: 'Failed to login'});
+					}
 				}
-			};
-		}
-
-		login: function(user, pass) {
-			return ({
-				user: "kalli",
-				pass: "123"
-			}).success(function(response) {
-				return "login successful";
-			}).error(function(response) {
-				return "failed to login";
-			});
+			}
+			return promise;
 		}
 	};
 
-
-
-	var mockLocation = {
-
-	};
-
-	var mockRoutes = {
-
-	};
 
 	beforeEach(module('Evaluator'));
-	beforeEach(inject(function ($controller, $rootScope) {
+	beforeEach(inject(function ($controller, $rootScope, $location) {
 		scope = $rootScope.$new();
+		location = $location;
 		controller = $controller('LoginController', {
 			$scope: scope,
-			$location: mockLocation,
-			$routeParams: mockRoutes,
-			LoginFactory: mockLoginFactory
-		});
-	}));
-
-	it("should return correct message when successful", function() {
-		scope.username = "kalli";
-		scope.password = "123";
-		controller.scope.login();
-		expect(mockLoginFactory.login).toBe("login successful");
-	});
-
-});
-*/
-
-describe('LoginController', function() {
-
-	var controller;
-	var scope;
-
-	var mockLoginFactory = {
-
-		login: function(user, pass) {
-			return {
-				success: function(fn) {
-						// Hér ætti að kalla í fn EF við viljum að aðgerðin takist,
-                        // þ.e. ef við erum að herma eftir því þegar login tekst
-					return {
-						error: function(errorfn) {
-							// Hér ætti að kalla í errorFn EF við viljum
-                            // herma eftir því hvað gerist ef login klikkar
-						}
-					};
-				}
-			};
-		}
-	};
-
-	var mockLocation = {
-
-	};
-
-	var mockRoutes = {
-
-	};
-
-	beforeEach(module('Evaluator'));
-	beforeEach(inject(function ($controller, $rootScope) {
-		scope = $rootScope.$new();
-		controller = $controller('LoginController', {
-			$scope: scope,
-			$location: mockLocation,
-			$routeParams: mockRoutes,
+			$location: location,
 			LoginFactory: mockLoginFactory
 		});
 	}));
@@ -151,79 +57,34 @@ describe('LoginController', function() {
 		scope.login();
 		expect(scope.errorMessage).toEqual("You must fill in a password");
 	});
-	/*
-	it("should return correct message when successful", function() {
-		scope.username = "kalli";
-		scope.password = "123";
+
+	it("should fail to login", function() {
+		scope.username = "carl11";
+		scope.password = "12345";
 		scope.login();
-		expect(mockLoginFactory.login).toBe("login successful");
+		expect(scope.errorMessage).toEqual("Failed to login");
 	});
-	*/
-});
 
-/*
-describe('AdminTemplateController', function() {
 
-	var controller;
-	var scope;
 
-	var mockAdminFactory = {
-		addTemplate: function(title, titleEN, introText, introTextEN, courseQuestions, teacherQuestions) {
+	it("should successfully login student ", function() {
+		scope.username = "carl13";
+		scope.password = "12345";
+		scope.login();
+		expect(location.path()).toEqual('/evals/')
+	});
 
-		}
-	};
-
-	beforeEach(module('Evaluator'));
-	beforeEach(inject(function($controller, $rootScope) {
-		scope = $rootScope.$new();
-
-		spyOn(mockAdminFactory, "addTemplate");
-
-		controller = $controller('AdminTemplateController', {
-			$scope: scope,
-			AdminFactory: mockAdminFactory
-		});
-	}));
-
-	it("should create a template", function() {
-		expect(scope.title).toBeDefined();
-		expect(scope.titleEN).toBeDefined();
-		expect(scope.introText).toBeDefined();
-		expect(scope.introTextEN).toBeDefined();
-		expect(scope.CourseQuestions).toBeDefined();
-		expect(scope.teacherQuestions).toBeDefined();
-		expect(scope.createTemplate).toBeDefined();
-		expect(mockAdminFactory.addTemplate()).toHaveBeenCalled();
+	it("should successfully login admin ", function() {
+		scope.username = "admin";
+		scope.password = "12345";
+		scope.login();
+		expect(location.path()).toEqual('/admin/')
 	});
 });
-*/
 
 describe('AdminController', function() {
 	var controller;
 	var scope;
-
-	/*
-	var mockAdminFactory = {
-		addTemplate: function(title, titleEN, introText, introTextEN, courseQuestions, teacherQuestions) {
-
-		},
-
-		getEvals: function() {
-			return {
-				success: function(fn) {
-					//
-					//
-					return {
-						error: function(errorfn) {
-							//
-							//
-						}
-					};
-				}
-			};
-		}
-	};
-	*/
 
 	beforeEach(module('Evaluator'));
 	beforeEach(inject(function ($controller, $rootScope) {
@@ -241,35 +102,23 @@ describe('AdminController', function() {
 			endDate: new Date(),
 			templateID: 0
 		};
-		scope.newEval.startDate.setHours(10, 0, 0, 0);
+
+		scope.newEval.startDate.setHours(1, 0, 0, 0);
 		scope.newEval.endDate.setHours(0, 0, 0, 0);
 		scope.setSd();
 		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
 	});
 
-	it('should set the endDate not the startDate', function() {
+	it('should set start date equal to end date if start date is later than end date', function() {
 		scope.newEval = {
 			errorMessage: '',
 			startDate: new Date(),
 			endDate: new Date(),
 			templateID: 0
 		};
+
 		scope.newEval.startDate.setHours(0, 0, 0, 0);
-		scope.newEval.endDate.setHours(10, 0, 0, 0);
-		scope.setSd();
-
-		expect(scope.newEval.startDate).toBeLessThan(scope.newEval.endDate);
-	});
-
-	it('should set end date equal to start date if end date is earlier than start date', function() {
-		scope.newEval = {
-			errorMessage: '',
-			startDate: new Date(),
-			endDate: new Date(),
-			templateID: 0
-		};
-		scope.newEval.startDate.setHours(10, 0, 0, 0);
-		scope.newEval.endDate.setHours(0, 0, 0, 0);
+		scope.newEval.endDate.setHours(-1, 0, 0, 0);
 		scope.setEd();
 		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
 	});
@@ -281,8 +130,24 @@ describe('AdminController', function() {
 			endDate: new Date(),
 			templateID: 0
 		};
-		scope.newEval.startDate.setHours(-10, 0, 0, 0);
+
+		scope.newEval.startDate.setHours(-1, 0, 0, 0);
 		scope.newEval.endDate.setHours(0, 0, 0, 0);
+		scope.setSd();
+
+		expect(scope.newEval.startDate).toBeLessThan(scope.newEval.endDate);
+	});
+
+	it('should set the endDate not the startDate', function() {
+		scope.newEval = {
+			errorMessage: '',
+			startDate: new Date(),
+			endDate: new Date(),
+			templateID: 0
+		};
+
+		scope.newEval.startDate.setHours(0, 0, 0, 0);
+		scope.newEval.endDate.setHours(1, 0, 0, 0);
 		scope.setEd();
 
 		expect(scope.newEval.startDate).toBeLessThan(scope.newEval.endDate);
