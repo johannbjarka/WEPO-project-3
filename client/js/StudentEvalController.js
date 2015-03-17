@@ -10,7 +10,6 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 	$scope.introN = '';
 	$scope.teacherAnswers = [];
 	$scope.courseAnswers = [];
-	$scope.className = 'glyphicon glyphicon-unchecked';
 
 	$scope.getTeachers = function() {
 		StudentFactory.getTeachers($routeParams.CourseID, $routeParams.Semester)
@@ -73,14 +72,6 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 			$location.path('/evals');
 		}
 	};
-
-	$scope.changeClass = function(){
-        if ($scope.class === "glyphicon glyphicon-unchecked") {
-        	$scope.class = "glyphicon glyphicon-record";
-        } else {
-         	$scope.class = "glyphicon glyphicon-unchecked";
-        }
-    };
 
 	$scope.getTeachers();
 	$scope.getEval();
