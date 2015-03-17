@@ -101,40 +101,45 @@ describe('LoginController', function() {
 	
 	var controller;
 	var scope;
+	var location;
 
 	var mockLoginFactory = {
-
-		login: function(user, pass) {
-			return {
-				success: function(fn) {
-					//
-					//
-					return {
-						error: function(errorfn) {
-							//
-							//
-						}
-					};
-				}
-			};
+		login: function(user, pass)  {
+			var promise = {
+				then: function(success, error){
+					if(user === "carl13" && pass === "12345" ){
+						success({data: {
+							Token: "",
+							User: {
+								Role: "student",
+							}
+						}});
+					}
+					else if(user === "admin" && pass ==="12345"){
+						success({data: {
+							Token: "",
+							User: {
+								Role: "admin",
+							}
+						}});
+					}
+					else{
+						error({Error: 'Failed to login'});
+					}
+				}	
+			}
+			return promise;
 		}
 	};
 
-	var mockLocation = {
 
-	};
-
-	var mockRoutes = {
-
-	};
-	
 	beforeEach(module('Evaluator'));
-	beforeEach(inject(function ($controller, $rootScope) {
+	beforeEach(inject(function ($controller, $rootScope, $location) {
 		scope = $rootScope.$new();
+		location = $location;
 		controller = $controller('LoginController', {
 			$scope: scope,
-			$location: mockLocation,
-			$routeParams: mockRoutes,
+			$location: location,
 			LoginFactory: mockLoginFactory
 		});
 	}));
@@ -151,14 +156,32 @@ describe('LoginController', function() {
 		scope.login();
 		expect(scope.errorMessage).toEqual("You must fill in a password");
 	});
-	/*
-	it("should return correct message when successful", function() {
-		scope.username = "kalli";
-		scope.password = "123";
+
+	it("should fail to login", function() {
+		scope.username = "carl11";
+		scope.password = "12345";
 		scope.login();
-		expect(mockLoginFactory.login).toBe("login successful");
+		expect(scope.errorMessage).toEqual("Failed to login");
 	});
-	*/
+
+
+
+	it("should successfully login student ", function() {
+		scope.username = "carl13";
+		scope.password = "12345";
+		scope.login();
+		expect(location.path()).toEqual('/evals/')
+	});
+
+	it("should successfully login admin ", function() {
+		scope.username = "admin";
+		scope.password = "12345";
+		scope.login();
+		expect(location.path()).toEqual('/admin/')
+	});
+
+
+
 });
 
 /*
