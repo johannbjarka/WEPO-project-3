@@ -1,5 +1,5 @@
 describe('LoginController', function() {
-	
+
 	var controller;
 	var scope;
 	var location;
@@ -27,7 +27,7 @@ describe('LoginController', function() {
 					else{
 						error({Error: 'Failed to login'});
 					}
-				}	
+				}
 			}
 			return promise;
 		}
@@ -43,7 +43,7 @@ describe('LoginController', function() {
 			LoginFactory: mockLoginFactory
 		});
 	}));
-	
+
 	it("should give an error message when username is empty", function() {
 		scope.username = "";
 		scope.login();
@@ -80,7 +80,6 @@ describe('LoginController', function() {
 		expect(location.path()).toEqual('/admin/')
 	});
 });
-
 
 describe('AdminController', function() {
 	var controller;
@@ -148,29 +147,102 @@ describe('AdminController', function() {
 		expect(scope.errorMessage).toEqual("Failed to get evaluations");
 	});
 
-	it('should set end date equal to start date if end date is earlier than start date', function() {
+	//NOT SHOWING UP ON COVERAGE REPORT?!?
+	it('should open startDate datepicker and close endDate datepicker', function() {
+		scope.openedSd = false;
+		scope.openedEd = true;
+
+		//Shitty way to not test events.
+		var evente = {
+			preventDefault: function() {},
+			stopPropagation: function() {}
+		};
+		scope.openSd(evente);
+
+		expect(scope.openedSd).toEqual(true);
+		expect(scope.openedEd).toEqual(false);
+	});
+
+	//NOT SHOWING UP ON COVERAGE REPORT?!?
+	it('should open startDate datepicker and close endDate datepicker', function() {
+		scope.openedSd = true;
+		scope.openedEd = false;
+
+		//Shitty way to not test events.
+		var evente = {
+			preventDefault: function() {},
+			stopPropagation: function() {}
+		};
+		scope.openEd(evente);
+
+		expect(scope.openedSd).toEqual(false);
+		expect(scope.openedEd).toEqual(true);
+	});
+
+
+	it('should set endDate equal to startDate if endDate is earlier than startDate', function() {
 		scope.newEval = {
-			errorMessage: '',
 			startDate: new Date(),
 			endDate: new Date(),
-			templateID: 0
 		};
-		scope.newEval.startDate.setHours(10, 0, 0, 0);
+
+		scope.newEval.startDate.setHours(1, 0, 0, 0);
 		scope.newEval.endDate.setHours(0, 0, 0, 0);
 		scope.setSd();
+
 		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
 	});
 
-	it('should set end date equal to start date if end date is earlier than start date', function() {
+	it('should set startDate equal to endDate if startDate is later than endDate', function() {
 		scope.newEval = {
-			errorMessage: '',
 			startDate: new Date(),
 			endDate: new Date(),
-			templateID: 0
 		};
-		scope.newEval.startDate.setHours(10, 0, 0, 0);
-		scope.newEval.endDate.setHours(0, 0, 0, 0);
+
+		scope.newEval.startDate.setHours(0, 0, 0, 0);
+		scope.newEval.endDate.setHours(-1, 0, 0, 0);
 		scope.setEd();
+
 		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
 	});
+
+	it('should set the startDate not the endDate', function() {
+		scope.newEval = {
+			startDate: new Date(),
+			endDate: new Date(),
+		};
+
+		scope.newEval.startDate.setHours(-1, 0, 0, 0);
+		scope.newEval.endDate.setHours(0, 0, 0, 0);
+		scope.setSd();
+
+		expect(scope.newEval.startDate).toBeLessThan(scope.newEval.endDate);
+	});
+
+	it('should set the endDate not the startDate', function() {
+		scope.newEval = {
+			startDate: new Date(),
+			endDate: new Date(),
+		};
+
+		scope.newEval.startDate.setHours(0, 0, 0, 0);
+		scope.newEval.endDate.setHours(1, 0, 0, 0);
+		scope.setEd();
+
+		expect(scope.newEval.startDate).toBeLessThan(scope.newEval.endDate);
+	});
+});
+
+describe('AdminTemplateController', function() {
+	var controller;
+	var scope;
+
+	beforeEach(module('Evaluator'));
+	beforeEach(inject(function ($controller, $rootScope) {
+		scope = $rootScope.$new();
+		controller = $controller('AdminTemplateController', {
+			$scope: scope,
+			//AdminFactory: mockAdminFactory
+		});
+	}));
 });
