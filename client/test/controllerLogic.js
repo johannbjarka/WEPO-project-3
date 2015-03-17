@@ -107,12 +107,12 @@ describe('LoginController', function() {
 		login: function(user, pass) {
 			return {
 				success: function(fn) {
-					//
-					//
+						// Hér ætti að kalla í fn EF við viljum að aðgerðin takist, 
+                        // þ.e. ef við erum að herma eftir því þegar login tekst
 					return {
 						error: function(errorfn) {
-							//
-							//
+							// Hér ætti að kalla í errorFn EF við viljum
+                            // herma eftir því hvað gerist ef login klikkar
 						}
 					};
 				}
