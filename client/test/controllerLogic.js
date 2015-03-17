@@ -1,7 +1,7 @@
 
 /*
 describe("HomeCtrl login", function(){
-	
+
 	var ctrl, scope;
 	var fakeChat = {
 		logonUser: function(username){
@@ -27,13 +27,13 @@ describe("HomeCtrl login", function(){
 		expect(fakeChat.getRoomList)
 		.toHaveBeenCalledWith(user);
 	});
-	
+
 });
 
 */
 /*
 describe('LoginController', function() {
-	
+
 	var controller;
 	var scope;
 
@@ -75,7 +75,7 @@ describe('LoginController', function() {
 	var mockRoutes = {
 
 	};
-	
+
 	beforeEach(module('Evaluator'));
 	beforeEach(inject(function ($controller, $rootScope) {
 		scope = $rootScope.$new();
@@ -86,19 +86,19 @@ describe('LoginController', function() {
 			LoginFactory: mockLoginFactory
 		});
 	}));
-	
+
 	it("should return correct message when successful", function() {
 		scope.username = "kalli";
 		scope.password = "123";
 		controller.scope.login();
 		expect(mockLoginFactory.login).toBe("login successful");
 	});
-	
+
 });
 */
 
 describe('LoginController', function() {
-	
+
 	var controller;
 	var scope;
 
@@ -107,7 +107,7 @@ describe('LoginController', function() {
 		login: function(user, pass) {
 			return {
 				success: function(fn) {
-						// Hér ætti að kalla í fn EF við viljum að aðgerðin takist, 
+						// Hér ætti að kalla í fn EF við viljum að aðgerðin takist,
                         // þ.e. ef við erum að herma eftir því þegar login tekst
 					return {
 						error: function(errorfn) {
@@ -127,7 +127,7 @@ describe('LoginController', function() {
 	var mockRoutes = {
 
 	};
-	
+
 	beforeEach(module('Evaluator'));
 	beforeEach(inject(function ($controller, $rootScope) {
 		scope = $rootScope.$new();
@@ -138,7 +138,7 @@ describe('LoginController', function() {
 			LoginFactory: mockLoginFactory
 		});
 	}));
-	
+
 	it("should give an error message when username is empty", function() {
 		scope.username = "";
 		scope.login();
@@ -172,7 +172,7 @@ describe('AdminTemplateController', function() {
 
 		}
 	};
-	
+
 	beforeEach(module('Evaluator'));
 	beforeEach(inject(function($controller, $rootScope) {
 		scope = $rootScope.$new();
@@ -197,7 +197,6 @@ describe('AdminTemplateController', function() {
 	});
 });
 */
-
 
 describe('AdminController', function() {
 	var controller;
@@ -248,6 +247,20 @@ describe('AdminController', function() {
 		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
 	});
 
+	it('should set the endDate not the startDate', function() {
+		scope.newEval = {
+			errorMessage: '',
+			startDate: new Date(),
+			endDate: new Date(),
+			templateID: 0
+		};
+		scope.newEval.startDate.setHours(0, 0, 0, 0);
+		scope.newEval.endDate.setHours(10, 0, 0, 0);
+		scope.setSd();
+
+		expect(scope.newEval.startDate).toBeLessThan(scope.newEval.endDate);
+	});
+
 	it('should set end date equal to start date if end date is earlier than start date', function() {
 		scope.newEval = {
 			errorMessage: '',
@@ -259,5 +272,19 @@ describe('AdminController', function() {
 		scope.newEval.endDate.setHours(0, 0, 0, 0);
 		scope.setEd();
 		expect(scope.newEval.startDate).toEqual(scope.newEval.endDate);
+	});
+
+	it('should set the startDate not the endDate', function() {
+		scope.newEval = {
+			errorMessage: '',
+			startDate: new Date(),
+			endDate: new Date(),
+			templateID: 0
+		};
+		scope.newEval.startDate.setHours(-10, 0, 0, 0);
+		scope.newEval.endDate.setHours(0, 0, 0, 0);
+		scope.setEd();
+
+		expect(scope.newEval.startDate).toBeLessThan(scope.newEval.endDate);
 	});
 });
