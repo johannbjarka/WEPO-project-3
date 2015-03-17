@@ -3,6 +3,38 @@
 @deletelistcolor: rgb(217, 83, 79);
 @answerlistcolor: rgb(140, 140, 140);
 
+.container.boxed {
+	position: relative;
+}
+
+.fade-effect {
+ 	&.ng-enter,
+ 	&.ng-leave {
+ 		left: 0;
+ 		top: 0;
+ 		width: 100%;
+ 		height: 100%;
+		transition: 0.4s cubic-bezier(0.550, 0.085, 0.680, 0.530) all; //ease in quad
+	}
+	&.ng-enter {
+		opacity: 0;
+		transform: scale(0.95);
+		&.ng-enter-active {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+	&.ng-leave {
+		transition: 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) all; //ease out quad
+		position: absolute;
+		opacity: 1;
+		&.ng-leave-active {
+			transform: scale(1.05);
+			opacity: 0;
+		}
+	}
+}
+
 .glyphinfo(@height: 0px; @bgColor: #000000) {
 	position: absolute;
 	top: @height;
