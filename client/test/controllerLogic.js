@@ -33,7 +33,6 @@ describe('LoginController', function() {
 		}
 	};
 
-
 	beforeEach(module('Evaluator'));
 	beforeEach(inject(function ($controller, $rootScope, $location) {
 		scope = $rootScope.$new();
@@ -80,25 +79,74 @@ describe('LoginController', function() {
 		scope.login();
 		expect(location.path()).toEqual('/admin/')
 	});
-
-
-
 });
-
 
 
 describe('AdminController', function() {
 	var controller;
 	var scope;
+	var window;
+	var window_;
+	var windowMock;
 
-	beforeEach(module('Evaluator'));
-	beforeEach(inject(function ($controller, $rootScope) {
+	var mockAdminFactory = {
+		getEvals: function() {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken") {
+						success({data: [{
+							ID: 1,
+							TemplateTitle: "template"
+						}]});
+					} else {
+						error({Error: 'Failed to get evaluations'});
+					}
+				}
+			}
+			return promise;
+		},
+		getTemplates: function() {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken") {
+						success({data: [{
+							ID: 1,
+							Title: "template1"
+						}]});
+					} else {
+						error({Error: 'Failed to get templates'});
+					}
+				}
+			}
+			return promise;
+		}
+	};
+
+	beforeEach(module('Evaluator', function($provide) {
+		windowMock = {
+			localStorage: { token: "mockGoodToken" }
+		};
+		$provide.value('window', windowMock);
+	}));
+	beforeEach(inject(function ($controller, $rootScope, _window_) {
 		scope = $rootScope.$new();
+		window_ = _window_;
 		controller = $controller('AdminController', {
 			$scope: scope,
-			//AdminFactory: mockAdminFactory
+			AdminFactory: mockAdminFactory
 		});
 	}));
+
+	it('should fetch evaluations', function() {
+		scope.showEvals();
+		expect(scope.evaluations).toEqual([{ID: 1, TemplateTitle: "template"}]);
+	});
+
+	it('should fail to get evaluations when token is invalid', function() {
+		window_.localStorage = { token: "mockBadToken123" };
+		scope.showEvals();
+		expect(scope.errorMessage).toEqual("Failed to get evaluations");
+	});
 
 	it('should set end date equal to start date if end date is earlier than start date', function() {
 		scope.newEval = {
