@@ -31,14 +31,9 @@
 		</div>
 	</div>
 
-	<h3>Course questions</h3>
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-default" ng-click="addCourseTextQuestion()"><span class="glyphicon glyphicon-font"></span>	Text question</button>
-				<button type="button" class="btn btn-default" ng-click="addCourseSingleQuestion()"><span class="glyphicon glyphicon-record"></span>	Single select</button>
-				<button type="button" class="btn btn-default" ng-click="addCourseMultiQuestion()"><span class="glyphicon glyphicon-check"></span> Multi select</button>
-			</div>
+			<h2 clas="panel-header">Course questions</h2>
 		</div>
 		<ol class="list-header">
 			<li ng-repeat="(key, item) in CourseQuestions" class="question_{{item.Type}}">
@@ -90,6 +85,13 @@
 				</ng-form>
 			</li>
 		</ol>
+		<div class="panel-footer">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-default" ng-click="addCourseTextQuestion()"><span class="glyphicon glyphicon-font"></span>	Text question</button>
+				<button type="button" class="btn btn-default" ng-click="addCourseSingleQuestion()"><span class="glyphicon glyphicon-record"></span>	Single select</button>
+				<button type="button" class="btn btn-default" ng-click="addCourseMultiQuestion()"><span class="glyphicon glyphicon-check"></span> Multi select</button>
+			</div>
+		</div>
 	</div>
 
 	<h3>Teacher questions</h3>
