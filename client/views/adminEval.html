@@ -1,36 +1,37 @@
 <h3>{{TemplateTitleEN}}</h3>
 
-<div class ="row">
+<div>
 	<div class="alert alert-danger" ng-cloak ng-show="errorMessage != ''">
 		{{errorMessage}}
 	</div>
 </div>
 
-<div class="col-md-12">
-	<ol class="list-header">
-		<li ng-repeat="course in courses">
-			<h4>
-				Results from {{course.id}} - {{course.nameEN}} - {{course.semester}}
-			</h4>
-			<ul class="list-unstyled">
+<div>
+	<button class="btn btn-default" ng-click="openClose()">Expand / Collapse all</button>
+	<div ng-repeat="course in courses" class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title">Results from {{course.id}} {{course.nameEN}} for {{course.semester}}</h2>
+		</div>
+		<div class="panel-body">
+			<accordion close-others="false">
+				<accordion-group ng-repeat="question in course.questions" heading="{{question.TextEN}}" is-open="isOpen">
+					<display-question ng-model="question"></display-question>
+				</accordion-group>
+			</accordion>
 
-				<li ng-repeat="question in course.Questions">
-					<h5>{{question.TextEN}}</h5>
-
-					<p ng-if="question.TeacherSSN !== null">
-						Results for: {{question.TeacherSSN}}
-					</p>
-
-					<ul ng-if="question.TextResults !== null">
-						<li ng-repeat="text in question.TextResults track by $index">{{text}}</li>
-					</ul>
-					<div class="row">
-						<div class="col-md-6" ng-if="question.OptionsResults !== null">
-							<canvas class="chart chart-bar" data="question.data" labels="question.labels"></canvas>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</li>
-	</ol>
+			<div ng-repeat="teacher in course.teachers" class="panel panel-default">
+				<div class="panel-heading">
+					<!--img src="{{teacher.imageURL}}" alt="Image of {{teacher.name}}"-->
+					<h3 class="panel-title">Results for {{teacher.name}} ({{teacher.email}})</h3>
+				</div>
+				<div class="panel-body">
+					<accordion close-others="false">
+						<accordion-group ng-repeat="question in teacher.questions" heading="{{question.TextEN}}" is-open="isOpen">
+							<display-question ng-model="question"></display-question>
+						</accordion-group>
+					</accordion>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

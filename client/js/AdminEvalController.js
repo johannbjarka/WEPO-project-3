@@ -1,6 +1,8 @@
 angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$location', '$routeParams', 'AdminFactory', 'toastr',
 	function ($scope, $location, $routeParams, AdminFactory, toastr) {
 	$scope.errorMessage = "";
+	$scope.isRootOpen = true;
+	$scope.isOpen = true;
 
 	$scope.template = {};
 	$scope.courses = [];
@@ -24,6 +26,8 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 				};
 				for(var j in courseData.Questions) {
 					var question = courseData.Questions[j];
+					chartData(question);
+
 					if(question.TeacherSSN === null) {
 						course.questions.push(question);
 					}
@@ -37,7 +41,6 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 				getTeacherInfo(course);
 
 				$scope.Courses = response.data.Courses;
-				evalData();
 
 				$scope.courses.push(course);
 			}
@@ -62,25 +65,31 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 		});
 	};
 
-	var evalData = function() {
-		for(var c in $scope.Courses) {
-			for(var q in $scope.Courses[c].Questions) {
-				var labels = [];
-				var data = [[]];
+	var chartData = function(question) {
+		var labels = [];
+		var data = [[]];
 
-				if($scope.Courses[c].Questions[q].OptionsResults !== null) {
-					for(var o in $scope.Courses[c].Questions[q].OptionsResults) {
-						labels.push($scope.Courses[c].Questions[q].OptionsResults[o].AnswerTextEN);
-						data[0].push($scope.Courses[c].Questions[q].OptionsResults[o].Count);
-					}
-				}
-				if(labels.length !== 0) {
-					$scope.Courses[c].Questions[q]["labels"] = labels;
-					$scope.Courses[c].Questions[q]["data"] = data;
-				}
+		if(question.OptionsResults !== null) {
+			for(var o in question.OptionsResults) {
+				labels.push(question.OptionsResults[o].AnswerTextEN);
+				data[0].push(question.OptionsResults[o].Count);
 			}
 		}
+		if(labels.length !== 0) {
+			question["labels"] = labels;
+			question["data"] = data;
+		}
 	};
+
+	$scope.openClose = function() {
+		$scope.isOpen = !$scope.isOpen;
+	};
+	/*
+	var close = function() {
+		$scope.isOpen = false;
+	};
+	setTimeout(close, 5000);
+	*/
 
 	$scope.getEval($routeParams.id);
 }]);
