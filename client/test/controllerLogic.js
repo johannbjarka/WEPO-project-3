@@ -277,27 +277,30 @@ describe('AdminTemplateController', function() {
 
 	var mockAdminFactory = {
 		getTemplate: function(id) {
+			console.log(id);
 			var promise = {
 				then: function(success, error) {
-					if(windowMock.localStorage['token'] === "mockGoodToken") {
-						success({data: {
-							Title: "abcd",
-							TitleEN: "efgh",
-							IntroText: "qwer",
-							IntroTextEN: "rewq",
-							CourseQuestions: [
-								{ TextEN: '', Text: 'best course?', Type: 'text' },
-								{ TextEN: '', Text: 'IsQuestion?', Type: 'single', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}, {TextEN: 'no answer', Text: 'ekkert svar'}]},
-								{ TextEN: '', Text: 'IsMulti?', Type: 'multiple', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}]}
-							],
-							TeacherQuestions: [
-								{ TextEN: '', Text: 'best teacher?', Type: 'text' },
-								{ TextEN: '', Text: 'IsQuestion?', Type: 'single', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}, {TextEN: 'no answer', Text: 'ekkert svar'}]}
-							]
-						}
-					});
+					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
+						success({
+							data: {
+								Title: "abcd",
+								TitleEN: "efgh",
+								IntroText: "qwer",
+								IntroTextEN: "rewq",
+								CourseQuestions: [
+									{ TextEN: '', Text: 'best course?', Type: 'text' },
+									{ TextEN: '', Text: 'IsQuestion?', Type: 'single', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}, {TextEN: 'no answer', Text: 'ekkert svar'}]},
+									{ TextEN: '', Text: 'IsMulti?', Type: 'multiple', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}]}
+								],
+								TeacherQuestions: [
+									{ TextEN: '', Text: 'best teacher?', Type: 'text' },
+									{ TextEN: '', Text: 'IsQuestion?', Type: 'single', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}, {TextEN: 'no answer', Text: 'ekkert svar'}]}
+								]
+							}
+						});
 					} else {
-						error({Error: 'Failed to get evaluations'});
+						console.log('bleh');
+						error({Error: 'Failed to get template'});
 					}
 				}
 			}
@@ -312,7 +315,7 @@ describe('AdminTemplateController', function() {
 							Title: "template1"
 						}]});
 					} else {
-						error({Error: 'Failed to get templates'});
+						error({Error: 'Failed to create template'});
 					}
 				}
 			}
@@ -339,12 +342,21 @@ describe('AdminTemplateController', function() {
 		spyOn(scope, 'getTemplate');
 	}));
 
-	it('Should not get template', function() {
+	it('Should not get template if id is not set', function() {
 		params.id = undefined;
 
 		scope.isViewing();
 
 		expect(scope.getTemplate).toHaveBeenCalled();
+	});
+
+
+	it('Should should fail loading template', function() {
+		scope.errorMessage = '';
+
+		scope.getTemplate();
+
+		expect(scope.errorMessage).toBe("");
 	});
 
 	it('Should populate fields', function() {
@@ -541,5 +553,336 @@ describe('AdminTemplateController', function() {
 		scope.moveTeacherQuestion(2, 1);
 
 		expect(q).toEqual(scope.TeacherQuestions[2]);
+	});*/
+});
+
+
+describe('AdminEvalController', function() {
+	var controller;
+	var scope;
+	var params;
+	var windowMock;
+
+	var mockAdminFactory = {
+		getEval: function(id) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
+						success({
+							data: {
+								ID: 1,
+								TemplateID: 1,
+								TemplateTitle: "Aðala undirstaða",
+								TemplateTitleEN: "Main template",
+								Courses: [{
+									CourseID: "T-427-WEPO",
+									CourseName: "Vefforritun II",
+									CourseNameEN: "Web Programming II",
+									ID: 1,
+									Semester: "20151",
+									Questions: [{
+											QuestionID: 1,
+											TeacherSSN: null,
+											nullText: "Fallegt verk?",
+											TextEN: "Work of art?",
+											Type: "text",
+											OptionsResults: null,
+											TextResults: [
+												"teyesyesys",
+												"I hear you boi",
+												"yesyesno?",
+												"wewe",
+												"bebebebebe"]
+										}, {
+											QuestionID: 2,
+											TeacherSSN: null,
+											Text: "Verkefni handa börnum",
+											TextEN: "Babadook?",
+											Type: "single",
+											TextResults: null,
+											OptionsResults: [{
+													Answer: 1,
+													AnswerText: "Varla er það hérna!",
+													AnswerTextEN: "Where is this!",
+													Count: 4
+												}, {
+													Answer: 2,
+													AnswerText: "Fleiri smákökur",
+													AnswerTextEN: "Moar cookies",
+													Count: 2
+												}
+											]
+										}, {
+											QuestionID: 3,
+											TeacherSSN: "1203735289",
+											Text: "Besta verkið?",
+											TextEN: "What is his best Work?",
+											Type: "text",
+											OptionsResults: null,
+											TextResults: [
+												"Nothing at all",
+												"His hair"]
+										}, {
+											QuestionID: 4,
+											TeacherSSN: "1203735289",
+											Text: "Besti trefillinn?",
+											TextEN: "What is his best trefill?",
+											Type: "text",
+											OptionsResults: null,
+											TextResults: [
+												"Nothing at all",
+												"His hair"]
+										}
+									]
+								}]
+							}
+						});
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+		getTeachers: function(id, semester) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
+						success({data: [{
+							Email: "man@beef.com",
+							FullName: "Madur Mansson",
+							ImageURL: "http://example.com/example.jpg",
+							Role: "teacher",
+							SSN: "1203735289"
+						}]});
+					} else {
+						error({Error: 'Failed to load teachers'});
+					}
+				}
+			}
+			return promise;
+		}
+	};
+
+	beforeEach(module('Evaluator', function($provide) {
+		windowMock = {
+			localStorage: { token: "mockGoodToken" }
+		};
+		$provide.value('window', windowMock);
+	}));
+
+	beforeEach(inject(function ($controller, $rootScope, $routeParams) {
+		scope = $rootScope.$new();
+		params = $routeParams;
+		controller = $controller('AdminEvalController', {
+			$scope: scope,
+			$routeParams: { id: 1 },
+			AdminFactory: mockAdminFactory
+		});
+	}));
+
+	it('Should get eval and map into courses object', function() {
+		scope.getEval(1);
+
+		expect(scope.courses[0].id).toEqual('T-427-WEPO');
+		expect(scope.courses[0].name).toEqual('Vefforritun II');
+		expect(scope.courses[0].nameEN).toEqual('Web Programming II');
+		expect(scope.courses[0].semester).toEqual('20151');
+		expect(scope.courses[0].questions.length).toEqual(2);
+		expect(scope.courses[0].teachers['1203735289']).not.toBeUndefined();
+		expect(scope.courses[0].teachers['1203735289'].name).toEqual('Madur Mansson');
+		expect(scope.courses[0].teachers['1203735289'].imageURL).toEqual('http://example.com/example.jpg');
+		expect(scope.courses[0].teachers['1203735289'].email).toEqual('man@beef.com');
+		expect(scope.courses[0].teachers['1203735289'].questions.length).toEqual(2);
+	});
+
+	it('Should fail loading eval', function() {
+		scope.errorMessage = '';
+
+		scope.getEval();
+
+		expect(scope.errorMessage).toBe('Failed to load evaluation');
+	});
+
+	it('Should fail loading teachers', function() {
+		scope.errorMessage = '';
+
+		scope.getTeacherInfo({id: undefined, semester: '2'});
+
+		expect(scope.errorMessage).toBe('Failed to load teachers');
+	});
+
+
+	it('Should flip isOpen', function() {
+		scope.isOpen = false;
+
+		scope.openClose();
+
+		expect(scope.isOpen).toBeTruthy();
+	});
+});
+
+describe('AdminEvalsController', function() {
+	/*
+	var controller;
+	var scope;
+	var windowMock;
+
+	var mockAdminFactory = {
+		getEvals: function(id) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
+						success({
+							data: {
+								ID: 1,
+								TemplateID: 1,
+								TemplateTitle: "Aðala undirstaða",
+								TemplateTitleEN: "Main template",
+								Courses: [{
+									CourseID: "T-427-WEPO",
+									CourseName: "Vefforritun II",
+									CourseNameEN: "Web Programming II",
+									ID: 1,
+									Semester: "20151",
+									Questions: [{
+											QuestionID: 1,
+											TeacherSSN: null,
+											nullText: "Fallegt verk?",
+											TextEN: "Work of art?",
+											Type: "text",
+											OptionsResults: null,
+											TextResults: [
+												"teyesyesys",
+												"I hear you boi",
+												"yesyesno?",
+												"wewe",
+												"bebebebebe"]
+										}, {
+											QuestionID: 2,
+											TeacherSSN: null,
+											Text: "Verkefni handa börnum",
+											TextEN: "Babadook?",
+											Type: "single",
+											TextResults: null,
+											OptionsResults: [{
+													Answer: 1,
+													AnswerText: "Varla er það hérna!",
+													AnswerTextEN: "Where is this!",
+													Count: 4
+												}, {
+													Answer: 2,
+													AnswerText: "Fleiri smákökur",
+													AnswerTextEN: "Moar cookies",
+													Count: 2
+												}
+											]
+										}, {
+											QuestionID: 3,
+											TeacherSSN: "1203735289",
+											Text: "Besta verkið?",
+											TextEN: "What is his best Work?",
+											Type: "text",
+											OptionsResults: null,
+											TextResults: [
+												"Nothing at all",
+												"His hair"]
+										}, {
+											QuestionID: 4,
+											TeacherSSN: "1203735289",
+											Text: "Besti trefillinn?",
+											TextEN: "What is his best trefill?",
+											Type: "text",
+											OptionsResults: null,
+											TextResults: [
+												"Nothing at all",
+												"His hair"]
+										}
+									]
+								}]
+							}
+						});
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+		getTeachers: function(id, semester) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
+						success({data: [{
+							Email: "man@beef.com",
+							FullName: "Madur Mansson",
+							ImageURL: "http://example.com/example.jpg",
+							Role: "teacher",
+							SSN: "1203735289"
+						}]});
+					} else {
+						error({Error: 'Failed to load teachers'});
+					}
+				}
+			}
+			return promise;
+		}
+	};
+
+	beforeEach(module('Evaluator', function($provide) {
+		windowMock = {
+			localStorage: { token: "mockGoodToken" }
+		};
+		$provide.value('window', windowMock);
+	}));
+
+	beforeEach(inject(function ($controller, $rootScope, $routeParams) {
+		scope = $rootScope.$new();
+		params = $routeParams;
+		controller = $controller('AdminEvalController', {
+			$scope: scope,
+			$routeParams: { id: 1 },
+			AdminFactory: mockAdminFactory
+		});
+	}));
+
+	it('Should get eval and map into courses object', function() {
+		scope.getEval(1);
+
+		expect(scope.courses[0].id).toEqual('T-427-WEPO');
+		expect(scope.courses[0].name).toEqual('Vefforritun II');
+		expect(scope.courses[0].nameEN).toEqual('Web Programming II');
+		expect(scope.courses[0].semester).toEqual('20151');
+		expect(scope.courses[0].questions.length).toEqual(2);
+		expect(scope.courses[0].teachers['1203735289']).not.toBeUndefined();
+		expect(scope.courses[0].teachers['1203735289'].name).toEqual('Madur Mansson');
+		expect(scope.courses[0].teachers['1203735289'].imageURL).toEqual('http://example.com/example.jpg');
+		expect(scope.courses[0].teachers['1203735289'].email).toEqual('man@beef.com');
+		expect(scope.courses[0].teachers['1203735289'].questions.length).toEqual(2);
+	});
+
+	it('Should fail loading eval', function() {
+		scope.errorMessage = '';
+
+		scope.getEval();
+
+		expect(scope.errorMessage).toBe('Failed to load evaluation');
+	});
+
+	it('Should fail loading teachers', function() {
+		scope.errorMessage = '';
+
+		scope.getTeacherInfo({id: undefined, semester: '2'});
+
+		expect(scope.errorMessage).toBe('Failed to load teachers');
+	});
+
+
+	it('Should flip isOpen', function() {
+		scope.isOpen = false;
+
+		scope.openClose();
+
+		expect(scope.isOpen).toBeTruthy();
 	});*/
 });

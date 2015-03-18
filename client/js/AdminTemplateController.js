@@ -96,7 +96,7 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 			$scope.CourseQuestions = response.data.CourseQuestions;
 			$scope.TeacherQuestions = response.data.TeacherQuestions;
 		}, function(response) {
-			$scope.errorMessage += 'Failed load template';
+			$scope.errorMessage = 'Failed load template';
 		});
 	};
 

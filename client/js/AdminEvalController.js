@@ -38,19 +38,18 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 						course.teachers[question.TeacherSSN].questions.push(question);
 					}
 				}
-				getTeacherInfo(course);
+				$scope.getTeacherInfo(course);
 
 				$scope.Courses = response.data.Courses;
 
 				$scope.courses.push(course);
 			}
-			console.log($scope.courses);
 		}, function(response) {
 			$scope.errorMessage = 'Failed to load evaluation';
 		});
 	};
 
-	var getTeacherInfo = function(course) {
+	$scope.getTeacherInfo = function(course) {
 		AdminFactory.getTeachers(course.id, course.semester)
 		.then(function(response) {
 			for(var t in response.data) {
@@ -63,6 +62,10 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 		}, function(response) {
 			$scope.errorMessage = 'Failed to load teachers';
 		});
+	};
+
+	$scope.openClose = function() {
+		$scope.isOpen = !$scope.isOpen;
 	};
 
 	var chartData = function(question) {
@@ -81,15 +84,6 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 		}
 	};
 
-	$scope.openClose = function() {
-		$scope.isOpen = !$scope.isOpen;
-	};
-	/*
-	var close = function() {
-		$scope.isOpen = false;
-	};
-	setTimeout(close, 5000);
-	*/
 
 	$scope.getEval($routeParams.id);
 }]);
