@@ -1,7 +1,13 @@
 <div>
-	<ul ng-if="ngModel.TextResults !== null">
-		<li ng-if="text !== ''" ng-repeat="text in ngModel.TextResults track by $index">{{text}}</li>
-	</ul>
+	<div class="row">
+		<div class="fancy-list col-md-6">
+			<ol ng-if="ngModel.TextResults !== null">
+				<li ng-if="text !== ''" ng-repeat="text in ngModel.TextResults track by $index">
+					<span>{{$index + 1}}.</span><p>{{text}}</p>
+				</li>
+			</ol>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-6" ng-if="ngModel.OptionsResults !== null">
 			<canvas class="chart chart-bar" data="ngModel.data" labels="ngModel.labels"></canvas>
