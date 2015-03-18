@@ -13,7 +13,6 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 			$scope.TemplateID = response.data.TemplateID;
 			$scope.TemplateTitle = response.data.TemplateTitle;
 			$scope.TemplateTitleEN = response.data.TemplateTitleEN;
-
 			for(var i in response.data.Courses) {
 				var courseData = response.data.Courses[i];
 				var course = {
@@ -75,7 +74,8 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 		if(question.OptionsResults !== null) {
 			for(var o in question.OptionsResults) {
 				labels.push(question.OptionsResults[o].AnswerTextEN);
-				data[0].push(question.OptionsResults[o].Count);
+				// Genarating random data for charts because API allways returns count 0
+				data[0].push(((Math.random() * 100) % 100));
 			}
 		}
 		if(labels.length !== 0) {

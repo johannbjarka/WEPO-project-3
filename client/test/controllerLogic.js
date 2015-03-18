@@ -760,6 +760,8 @@ describe('NavigationController', function() {
 describe('StudentEvalsController', function() {
 	var controller;
 	var scope;
+	var window_;
+	var window;
 	var windowMock;
 
 	var mockStudentFactory = {
@@ -804,12 +806,12 @@ describe('StudentEvalsController', function() {
 		$provide.value('window', windowMock);
 	}));
 
-	beforeEach(inject(function ($controller, $rootScope, $location, $window) {
+	beforeEach(inject(function ($controller, $rootScope, $location, _window_) {
 		scope = $rootScope.$new();
+		window_ = _window_;
 		controller = $controller('StudentEvalsController', {
 			$scope: scope,
 			StudentFactory: mockStudentFactory,
-			$window: windowMock
 		});
 	}));
 
@@ -819,13 +821,13 @@ describe('StudentEvalsController', function() {
 		expect(scope.evaluations.length).toBe(2);
 	});
 
-	/*it('Should not get user evaluations', function() {
-		_window.localStorage = { Token: 'notGoodOne' };
-
+	it('Should not get user evaluations', function() {
+		scope.evaluations = [];
+		window_.localStorage = { Token: 'notGoodOne' };
 		scope.showEvals();
-
+		expect(scope.errorMessage).toEqual("Failed to get data");
 		expect(scope.evaluations.length).toBe(0);
-	});*/
+	});
 });
 
 
@@ -833,6 +835,8 @@ describe('StudentEvalController', function() {
 	var controller;
 	var scope;
 	var windowMock;
+	var window;
+	var window_;
 	var routeMock;
 	var location;
 
@@ -956,13 +960,13 @@ describe('StudentEvalController', function() {
 		$provide.value('window', windowMock);
 	}));
 
-	beforeEach(inject(function ($controller, $rootScope, $location, $window, $routeParams) {
+	beforeEach(inject(function ($controller, $rootScope, $location, _window_, $routeParams) {
 		scope = $rootScope.$new();
+		window_ = _window_;
 		location = $location;
 		controller = $controller('StudentEvalController', {
 			$scope: scope,
 			StudentFactory: mockStudentFactory,
-			$window: windowMock,
 			$location: location,
 			$routeParams: routeMock
 		});
@@ -976,15 +980,17 @@ describe('StudentEvalController', function() {
 		expect(scope.courseAnswers.length).toBe(4);
 		expect(scope.teacherAnswers.length).toBe(2);
 	});
-	/*
+	
 	it('Should not get evaluation', function() {
-		scope.ID = undefined;
+		scope.courseQuestions = [];
+		scope.teacherQuestions = [];
+		window_.localStorage = { token: "mockBadToken123" };
 		scope.getEval();
 
+		expect(scope.errorMessage).toEqual("Failed to get data");
 		expect(scope.courseQuestions.length).toBe(0);
 		expect(scope.teacherQuestions.length).toBe(0);
 	});
-	*/
 
 	it('Should get teachers', function() {
 		scope.getTeachers();
@@ -992,16 +998,14 @@ describe('StudentEvalController', function() {
 		expect(scope.teachers.length).toBe(1);
 	});
 
-	/*
+	
 	it('Should not get teachers', function() {
+		window_.localStorage = { token: "mockBadToken123" };
 		scope.getTeachers();
 
-		expect(scope.courseQuestions.length).toBe(2);
-		expect(scope.teacherQuestions.length).toBe(2);
-		expect(scope.courseAnswers.length).toBe(4);
-		expect(scope.teacherAnswers.length).toBe(2);
+		expect(scope.errorMessage).toEqual("Failed to get data");
 	});
-	*/
+	
 
 	it('Should answer question', function() {
 		var answers = [

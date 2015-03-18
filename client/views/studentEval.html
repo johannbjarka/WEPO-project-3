@@ -8,6 +8,7 @@
 	<h3>Teacher questions:</h3>
 	<div ng-repeat="(tKey , teacher) in teachers">
 		<h4>{{teacher.FullName}}</h4>
+			<img src="{{teacher.ImageURL}}" class="teachers">
 		<div ng-repeat="(qKey, question) in teacherQuestions">
 			<evaluation-question ng-model="question" ng-answers="teacherAnswers[tKey][qKey]"></evaluation-question>
 		</div>

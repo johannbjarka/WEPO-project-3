@@ -57,8 +57,8 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 
 	$scope.saveEval = function() {
 		var i, j;
-		console.log($scope.courseAnswers);
-		console.log($scope.teacherAnswers);
+		//console.log($scope.courseAnswers);
+		//console.log($scope.teacherAnswers);
 		$scope.answerQuestion($scope.courseAnswers);
 		for(i = 0; i < $scope.teacherAnswers.length; i++) {
 			var isEmpty = true;
