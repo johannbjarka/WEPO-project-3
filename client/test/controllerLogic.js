@@ -118,6 +118,18 @@ describe('AdminController', function() {
 				}
 			}
 			return promise;
+		},
+		addEval: function(templateID, startDate, endDate) {
+			var promise = {
+				then: function(success, error) {
+					if(templateID === 1) {
+						success({Success: 'Evaluation was created'});
+					} else {
+						error({Error: 'Failed to create evaluation'});
+					}
+				}
+			}
+			return promise;
 		}
 	};
 
@@ -126,6 +138,8 @@ describe('AdminController', function() {
 			localStorage: { token: "mockGoodToken" }
 		};
 		$provide.value('window', windowMock);
+
+		spyOn(mockAdminFactory, "addEval");
 	}));
 
 	beforeEach(inject(function ($controller, $rootScope, _window_) {
@@ -146,6 +160,27 @@ describe('AdminController', function() {
 		window_.localStorage = { token: "mockBadToken123" };
 		scope.showEvals();
 		expect(scope.errorMessage).toEqual("Failed to get evaluations");
+	});
+
+	it('should fetch templates', function() {
+		scope.showTemplates();
+		expect(scope.templates).toEqual([{ID: 1, Title: "template1"}]);
+	});
+
+	it('should fail to get templates when token is invalid', function() {
+		window_.localStorage = { token: "mockBadToken123" };
+		scope.showTemplates();
+		expect(scope.errorMessage).toEqual("Failed to get templates");
+	});
+
+	it('should create a new evaluation', function() {
+		scope.newEval = {
+			startDate: new Date(),
+			endDate: new Date(),
+			templateID: 1
+		};
+		//scope.createEvaluation();
+		//expect(mockAdminFactory.addEval).toHaveBeenCalled();
 	});
 
 	//NOT SHOWING UP ON COVERAGE REPORT?!?
