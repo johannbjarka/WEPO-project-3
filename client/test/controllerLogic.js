@@ -127,6 +127,7 @@ describe('AdminController', function() {
 		};
 		$provide.value('window', windowMock);
 	}));
+
 	beforeEach(inject(function ($controller, $rootScope, _window_) {
 		scope = $rootScope.$new();
 		window_ = _window_;
@@ -236,13 +237,274 @@ describe('AdminController', function() {
 describe('AdminTemplateController', function() {
 	var controller;
 	var scope;
+	var params;
+	var windowMock;
 
-	beforeEach(module('Evaluator'));
-	beforeEach(inject(function ($controller, $rootScope) {
+	var mockAdminFactory = {
+		getTemplate: function(id) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken") {
+						success({data: {
+							Title: "abcd",
+							TitleEN: "efgh",
+							IntroText: "qwer",
+							IntroTextEN: "rewq",
+							CourseQuestions: [
+								{ TextEN: '', Text: 'best course?', Type: 'text' },
+								{ TextEN: '', Text: 'IsQuestion?', Type: 'single', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}, {TextEN: 'no answer', Text: 'ekkert svar'}]},
+								{ TextEN: '', Text: 'IsMulti?', Type: 'multiple', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}]}
+							],
+							TeacherQuestions: [
+								{ TextEN: '', Text: 'best teacher?', Type: 'text' },
+								{ TextEN: '', Text: 'IsQuestion?', Type: 'single', Answers: [{TextEN: 'yes', Text: 'já'}, {TextEN: 'no', Text: 'nei'}, {TextEN: 'no answer', Text: 'ekkert svar'}]}
+							]
+						}
+					});
+					} else {
+						error({Error: 'Failed to get evaluations'});
+					}
+				}
+			}
+			return promise;
+		},
+		createTemplate: function() {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['token'] === "mockGoodToken") {
+						success({data: [{
+							ID: 1,
+							Title: "template1"
+						}]});
+					} else {
+						error({Error: 'Failed to get templates'});
+					}
+				}
+			}
+			return promise;
+		}
+	};
+
+	beforeEach(module('Evaluator', function($provide) {
+		windowMock = {
+			localStorage: { token: "mockGoodToken" }
+		};
+		$provide.value('window', windowMock);
+	}));
+
+	beforeEach(inject(function ($controller, $rootScope, $routeParams) {
 		scope = $rootScope.$new();
+		params = $routeParams;
 		controller = $controller('AdminTemplateController', {
 			$scope: scope,
-			//AdminFactory: mockAdminFactory
+			$routeParams: { id: 1 },
+			AdminFactory: mockAdminFactory
 		});
+
+		spyOn(scope, 'getTemplate');
 	}));
+
+	it('Should not get template', function() {
+		params.id = undefined;
+
+		scope.isViewing();
+
+		expect(scope.getTemplate).toHaveBeenCalled();
+	});
+
+	it('Should populate fields', function() {
+		scope.getTemplate(1);
+
+		expect(scope.Title).toEqual("abcd");
+		expect(scope.TitleEN).toEqual("efgh");
+		expect(scope.IntroText).toEqual("qwer");
+		expect(scope.IntroTextEN).toEqual("rewq");
+		expect(scope.CourseQuestions.length).toEqual(3);
+		expect(scope.TeacherQuestions.length).toEqual(2);
+	});
+
+	it('Should add course text question', function() {
+		scope.getTemplate(1);
+
+		scope.addCourseTextQuestion();
+
+		expect(scope.CourseQuestions.length).toEqual(4);
+		expect(scope.CourseQuestions[3].Type).toEqual('text');
+	});
+
+	it('Should add course single question', function() {
+		scope.getTemplate(1);
+
+		scope.addCourseSingleQuestion();
+
+		expect(scope.CourseQuestions.length).toEqual(4);
+		expect(scope.CourseQuestions[3].Type).toEqual('single');
+	});
+
+	it('Should add course multiple question', function() {
+		scope.getTemplate(1);
+
+		scope.addCourseMultiQuestion();
+
+		expect(scope.CourseQuestions.length).toEqual(4);
+		expect(scope.CourseQuestions[3].Type).toEqual('multiple');
+	});
+
+	it('Should add course question answer', function() {
+		scope.getTemplate(1);
+
+		scope.addCourseQuestionAnswer(1);
+
+		expect(scope.CourseQuestions[1].Answers.length).toEqual(4);
+	});
+
+	it('Should remove course question', function() {
+		scope.getTemplate(1);
+
+		scope.removeCourseQuestion(1);
+
+		expect(scope.CourseQuestions.length).toEqual(2);
+	});
+
+	it('Should remove course question answer', function() {
+		scope.getTemplate(1);
+
+		scope.removeCourseQuestionAnswer(1, 1);
+
+		expect(scope.CourseQuestions[1].Answers.length).toEqual(2);
+	});
+
+	it('Should move course question up', function() {
+		scope.getTemplate(1);
+
+		var q1 = scope.CourseQuestions[0];
+		var q2 = scope.CourseQuestions[1];
+		scope.moveCourseQuestion(1, -1);
+
+		expect(q1).toEqual(scope.CourseQuestions[1]);
+		expect(q2).toEqual(scope.CourseQuestions[0]);
+	});
+
+	it('Should move course question down', function() {
+		scope.getTemplate(1);
+
+		var q1 = scope.CourseQuestions[0];
+		var q2 = scope.CourseQuestions[1];
+		scope.moveCourseQuestion(0, 1);
+
+		expect(q1).toEqual(scope.CourseQuestions[1]);
+		expect(q2).toEqual(scope.CourseQuestions[0]);
+	});
+
+	it('Should try move first course question up', function() {
+		scope.getTemplate(1);
+
+		var q = scope.CourseQuestions[0];
+		scope.moveCourseQuestion(0, -1);
+
+		expect(q).toEqual(scope.CourseQuestions[0]);
+	});
+
+	it('Should try move last course question up', function() {
+		scope.getTemplate(1);
+
+		var q = scope.CourseQuestions[2];
+		scope.moveCourseQuestion(2, 1);
+
+		expect(q).toEqual(scope.CourseQuestions[2]);
+	});
+
+	/************************************************/
+
+	it('Should add Teacher text question', function() {
+		scope.getTemplate(1);
+
+		scope.addTeacherTextQuestion();
+
+		expect(scope.TeacherQuestions.length).toEqual(3);
+		expect(scope.TeacherQuestions[2].Type).toEqual('text');
+	});
+
+	it('Should add Teacher single question', function() {
+		scope.getTemplate(1);
+
+		scope.addTeacherSingleQuestion();
+
+		expect(scope.TeacherQuestions.length).toEqual(3);
+		expect(scope.TeacherQuestions[2].Type).toEqual('single');
+	});
+
+	it('Should add Teacher multiple question', function() {
+		scope.getTemplate(1);
+
+		scope.addTeacherMultiQuestion();
+
+		expect(scope.TeacherQuestions.length).toEqual(3);
+		expect(scope.TeacherQuestions[2].Type).toEqual('multiple');
+	});
+
+	it('Should add Teacher question answer', function() {
+		scope.getTemplate(1);
+
+		scope.addTeacherQuestionAnswer(1);
+
+		expect(scope.TeacherQuestions[1].Answers.length).toEqual(4);
+	});
+
+	it('Should remove Teacher question', function() {
+		scope.getTemplate(1);
+
+		scope.removeTeacherQuestion(1);
+
+		expect(scope.TeacherQuestions.length).toEqual(1);
+	});
+
+	/*
+	it('Should remove course question answer', function() {
+		scope.getTemplate(1);
+
+		scope.removeCourseQuestionAnswer(1, 1);
+
+		expect(scope.CourseQuestions[1].Answers.length).toEqual(2);
+	});
+
+	it('Should move Teacher question up', function() {
+		scope.getTemplate(1);
+
+		var q1 = scope.TeacherQuestions[0];
+		var q2 = scope.TeacherQuestions[1];
+		scope.moveTeacherQuestion(1, -1);
+
+		expect(q1).toEqual(scope.TeacherQuestions[1]);
+		expect(q2).toEqual(scope.TeacherQuestions[0]);
+	});
+
+	it('Should move Teacher question down', function() {
+		scope.getTemplate(1);
+
+		var q1 = scope.TeacherQuestions[0];
+		var q2 = scope.TeacherQuestions[1];
+		scope.moveTeacherQuestion(0, 1);
+
+		expect(q1).toEqual(scope.TeacherQuestions[1]);
+		expect(q2).toEqual(scope.TeacherQuestions[0]);
+	});
+
+	it('Should try move first Teacher question up', function() {
+		scope.getTemplate(1);
+
+		var q = scope.TeacherQuestions[0];
+		scope.moveTeacherQuestion(0, -1);
+
+		expect(q).toEqual(scope.TeacherQuestions[0]);
+	});
+
+	it('Should try move last Teacher question up', function() {
+		scope.getTemplate(1);
+
+		var q = scope.TeacherQuestions[2];
+		scope.moveTeacherQuestion(2, 1);
+
+		expect(q).toEqual(scope.TeacherQuestions[2]);
+	});*/
 });
