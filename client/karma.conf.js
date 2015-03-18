@@ -24,9 +24,6 @@ module.exports = function(config) {
       'bower_components/Chart.js/Chart.js',
       'bower_components/angular-chart.js/dist/angular-chart.js',
       'js/app.js',
-      'js/config.js',
-      'js/AdminController.js',
-      'js/LoginController.js',
       'js/*.js',
       'test/*.js'
     ],
