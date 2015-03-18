@@ -179,8 +179,8 @@ describe('AdminController', function() {
 			endDate: new Date(),
 			templateID: 1
 		};
-		//scope.createEvaluation();
-		//expect(mockAdminFactory.addEval).toHaveBeenCalled();
+		scope.createEvaluation();
+		expect(mockAdminFactory.addEval).toHaveBeenCalled();
 	});
 
 	//NOT SHOWING UP ON COVERAGE REPORT?!?
@@ -273,6 +273,8 @@ describe('AdminTemplateController', function() {
 	var controller;
 	var scope;
 	var params;
+	var window_;
+	var window;
 	var windowMock;
 
 	var mockAdminFactory = {
@@ -328,9 +330,10 @@ describe('AdminTemplateController', function() {
 		$provide.value('window', windowMock);
 	}));
 
-	beforeEach(inject(function ($controller, $rootScope, $routeParams) {
+	beforeEach(inject(function ($controller, $rootScope, $routeParams, _window_) {
 		scope = $rootScope.$new();
 		params = $routeParams;
+		window_ = _window_;
 		controller = $controller('AdminTemplateController', {
 			$scope: scope,
 			$routeParams: { id: 1 },
@@ -340,7 +343,7 @@ describe('AdminTemplateController', function() {
 		spyOn(scope, 'getTemplate');
 
 	}));
-
+	
 	it('Should not get template if id is not set', function() {
 		params.id = undefined;
 
@@ -349,6 +352,11 @@ describe('AdminTemplateController', function() {
 		expect(scope.getTemplate).toHaveBeenCalled();
 	});
 
+	it('Should not get template if token is invalid', function() {
+		window_.localStorage = { Token: 'notGoodOne' };
+		scope.getTemplate(1);
+		expect(scope.errorMessage).toEqual('Failed to get data');
+	});
 
 	it('Should should fail loading template', function() {
 		scope.errorMessage = '';

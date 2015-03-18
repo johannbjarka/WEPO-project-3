@@ -7,8 +7,8 @@
 			<textarea class="form-control" rows="5" placeholder="your answer..." ng-model="ngAnswers.Value"></textarea>
 		</div>
 		<div ng-if="ngModel.Type === 'single'">
-			<div ng-repeat="answer in ngModel.Answers" class="btn-group">
-		        <label class="btn btn-success" ng-model="ngAnswers.Value" btn-radio="{{$index + 1}}">
+			<div class="btn-group">
+		        <label ng-repeat="answer in ngModel.Answers" class="btn btn-success" ng-model="ngAnswers.Value" btn-radio="{{$index + 1}}">
 		        	<span ng-class="{'glyphicon glyphicon-record': ngAnswers.Value === $index + 1, 'glyphicon glyphicon-unchecked': ngAnswers.Value !== $index + 1}"></span>
 		        	{{answer.TextEN}}
 		        </label>
