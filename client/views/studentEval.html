@@ -1,5 +1,5 @@
 <h2>{{title}} - Evaluation</h2>
-<h4>{{intro}}</h4>
+<h3>{{intro}}</h3>
 <div>
 	<div ng-cloak ng-show="hideCourse !== 1">
 		<h3>Course questions:</h3>
@@ -10,8 +10,17 @@
 	<div ng-cloak ng-show="hideTeacher !== 1">
 		<h3>Teacher questions:</h3>
 		<div ng-repeat="(tKey , teacher) in teachers">
-			<h4>{{teacher.FullName}}</h4>
-				<img src="{{teacher.ImageURL}}" class="teachers">
+			<div class="media">
+				<div class="media-left">
+					<div class="boxed-image">
+						<img src="{{teacher.ImageURL}}" alt="Image of {{teacher.FullName}}" class="media-object teacher-image">
+					</div>
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">{{teacher.FullName}}</h4>
+					<p>{{teacher.Email}}</p>
+				</div>
+			</div>
 			<div ng-repeat="(qKey, question) in teacherQuestions">
 				<evaluation-question ng-model="question" ng-answers="teacherAnswers[tKey][qKey]"></evaluation-question>
 			</div>

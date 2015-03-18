@@ -2,9 +2,29 @@
 @headerlistcolor: rgb(51, 122, 183);
 @deletelistcolor: rgb(217, 83, 79);
 @answerlistcolor: rgb(140, 140, 140);
+@imageRatio: 1.2;
+@imageWidth: 100px;
 
 .container.boxed {
 	position: relative;
+}
+
+.media {
+	padding-bottom: 10px;
+}
+
+.form-textarea {
+	resize: vertical;
+}
+
+.boxed-image {
+	width: @imageWidth;
+	overflow: hidden;
+	height: @imageWidth * @imageRatio;
+
+	img {
+		width: 100%;
+	}
 }
 
 .fade-effect {
@@ -45,12 +65,6 @@
 	text-align: center;
 	font-family: 'Glyphicons Halflings';
 	background-color: @bgColor;
-}
-
-.teachers {
-    padding-bottom: 15px;
-    width: 100px;
-    height: auto;
 }
 
 .customOrderedList {
@@ -150,6 +164,10 @@ ol.list-header {
 	}
 }
 
+#create-eval {
+	padding-left: 1em;
+}
+
 ol.list-answers {
 	counter-reset: li;
 	margin: 0;
@@ -179,35 +197,28 @@ ol.list-answers {
 	}
 }
 
-#create-eval {
-	padding-left: 1em;
-}
+.fancy-list {
+	ol {
+		color: #ccc;
+		list-style-type: none;
+		li {
+			position: relative;
+			font: bold 45px/1.5 Helvetica, Verdana, sans-serif;
+			margin-bottom: 20px;
 
-/*.fancy-list {
-	line-height: 60px;
-}*/
+			p {
+				font: 12px/1.5 Helvetica, sans-serif;
+				padding-left: 50px;
+				color: #555;
+				min-height: 40px;
+				display: inline-block;
+				vertical-align: middle;
+				line-height: normal;
+			}
+		}
+	}
 
-.fancy-list ol {
-	color: #ccc;
-  	list-style-type: none;
-}
-
-.fancy-list ol li {
-	position: relative;
-	font: bold 45px/1.5 Helvetica, Verdana, sans-serif;
-	margin-bottom: 20px;
-}
- 
-.fancy-list li p {
-	font: 12px/1.5 Helvetica, sans-serif;
-	padding-left: 50px;
-	color: #555;
-	min-height: 40px;
-	display: inline-block;
-	vertical-align: middle;
-	line-height: normal;
-}
- 
-.fancy-list span {
-	position: absolute;
+	span {
+		position: absolute;
+	}
 }
