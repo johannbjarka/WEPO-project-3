@@ -9,9 +9,10 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 	$scope.teachers = [];
 	$scope.title = $routeParams.CourseID;
 	$scope.intro = '';
-	$scope.introN = '';
 	$scope.teacherAnswers = [];
 	$scope.courseAnswers = [];
+	$scope.hideCourse = 0;
+	$scope.hideTeacher = 0;
 
 	$scope.getTeachers = function() {
 		StudentFactory.getTeachers($scope.courseID, $scope.semester)
@@ -26,9 +27,15 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 		StudentFactory.getStudentEval($scope.courseID, $scope.semester, $scope.ID)
 		.then(function(response) {
 			var i, j;
+			$scope.intro = response.data.IntroTextEN;
 			$scope.courseQuestions = response.data.CourseQuestions;
 			$scope.teacherQuestions = response.data.TeacherQuestions;
-
+			if($scope.courseQuestions.length === 0){
+				$scope.hideCourse = 1;
+			}
+			if($scope.teacherQuestions.length === 0){
+				$scope.hideTeacher = 1;
+			}
 			for(i = 0; i < $scope.courseQuestions.length; i++) {
 				$scope.courseAnswers.push({QuestionID: $scope.courseQuestions[i].ID, TeacherSSN: '', Value: ''});
 			}
@@ -57,8 +64,6 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 
 	$scope.saveEval = function() {
 		var i, j;
-		//console.log($scope.courseAnswers);
-		//console.log($scope.teacherAnswers);
 		$scope.answerQuestion($scope.courseAnswers);
 		for(i = 0; i < $scope.teacherAnswers.length; i++) {
 			var isEmpty = true;

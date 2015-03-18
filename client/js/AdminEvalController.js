@@ -74,7 +74,7 @@ angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$locat
 			for(var o in question.OptionsResults) {
 				labels.push(question.OptionsResults[o].AnswerTextEN);
 				// Genarating random data for charts because API allways returns count 0
-				data[0].push(((Math.random() * 100) % 100));
+				data[0].push(Math.floor(((Math.random() * 100) % 100)));
 			}
 		}
 		if(labels.length !== 0) {
