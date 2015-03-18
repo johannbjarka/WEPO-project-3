@@ -2,7 +2,9 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 	function ($scope, $location, $routeParams, StudentFactory) {
 	$scope.errorMessage = '';
 
-	$scope.courseQuestions = [];
+	$scope.courseID = $routeParams.CourseID;
+	$scope.semester = $routeParams.Semester;
+	$scope.ID = $routeParams.ID;
 	$scope.teacherQuestions = [];
 	$scope.teachers = [];
 	$scope.title = $routeParams.CourseID;
@@ -12,7 +14,7 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 	$scope.courseAnswers = [];
 
 	$scope.getTeachers = function() {
-		StudentFactory.getTeachers($routeParams.CourseID, $routeParams.Semester)
+		StudentFactory.getTeachers($scope.courseID, $scope.semester)
 		.then(function (response) {
 			$scope.teachers = response.data;
 		}, function (response) {
@@ -21,7 +23,7 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 	};
 
 	$scope.getEval = function() {
-		StudentFactory.getStudentEval($routeParams.CourseID, $routeParams.Semester, $routeParams.ID)
+		StudentFactory.getStudentEval($scope.courseID, $scope.semester, $scope.ID)
 		.then(function(response) {
 			var i, j;
 			$scope.courseQuestions = response.data.CourseQuestions;
@@ -45,8 +47,9 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 	};
 
 	$scope.answerQuestion = function(answers) {
-		StudentFactory.answerStudentEval($routeParams.CourseID, $routeParams.Semester, $routeParams.ID, answers)
+		StudentFactory.answerStudentEval($scope.courseID, $scope.semester, $scope.ID, answers)
 		.then(function (response) {
+			//none
 		}, function (response) {
 			$scope.errorMessage = 'Failed to get data';
 		});
@@ -54,6 +57,8 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 
 	$scope.saveEval = function() {
 		var i, j;
+		console.log($scope.courseAnswers);
+		console.log($scope.teacherAnswers);
 		$scope.answerQuestion($scope.courseAnswers);
 		for(i = 0; i < $scope.teacherAnswers.length; i++) {
 			var isEmpty = true;

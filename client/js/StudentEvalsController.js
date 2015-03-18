@@ -2,7 +2,6 @@ angular.module('Evaluator').controller('StudentEvalsController', ['$scope', '$lo
 	function ($scope, $location, $routeParams, StudentFactory) {
 	$scope.errorMessage = '';
 	$scope.evaluations = [];
-
 	$scope.showEvals = function() {
 		StudentFactory.getMyEvals()
 		.then(function(response) {

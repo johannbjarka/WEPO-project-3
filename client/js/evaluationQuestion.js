@@ -7,10 +7,6 @@ angular.module('Evaluator').directive('evaluationQuestion', function () {
 			ngModel: '=',
 			ngAnswers: '=',
 		},
-		link: function (scope, element, attr) {
-			scope.$watch('answer', function(value) {
-				//console.log(ngModel);
-			});
-		}
+		link: function (scope, element, attr) {}
 	};
 });

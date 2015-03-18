@@ -277,7 +277,6 @@ describe('AdminTemplateController', function() {
 
 	var mockAdminFactory = {
 		getTemplate: function(id) {
-			console.log(id);
 			var promise = {
 				then: function(success, error) {
 					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
@@ -299,7 +298,6 @@ describe('AdminTemplateController', function() {
 							}
 						});
 					} else {
-						console.log('bleh');
 						error({Error: 'Failed to get template'});
 					}
 				}
@@ -340,6 +338,7 @@ describe('AdminTemplateController', function() {
 		});
 
 		spyOn(scope, 'getTemplate');
+
 	}));
 
 	it('Should not get template if id is not set', function() {
@@ -556,7 +555,6 @@ describe('AdminTemplateController', function() {
 	});*/
 });
 
-
 describe('AdminEvalController', function() {
 	var controller;
 	var scope;
@@ -580,10 +578,11 @@ describe('AdminEvalController', function() {
 									CourseNameEN: "Web Programming II",
 									ID: 1,
 									Semester: "20151",
-									Questions: [{
+									Questions: [
+										{
 											QuestionID: 1,
 											TeacherSSN: null,
-											nullText: "Fallegt verk?",
+											Text: "Fallegt verk?",
 											TextEN: "Work of art?",
 											Type: "text",
 											OptionsResults: null,
@@ -722,106 +721,75 @@ describe('AdminEvalController', function() {
 	});
 });
 
-describe('AdminEvalsController', function() {
-	/*
+describe('NavigationController', function() {
+	var controller;
+	var scope;
+	var location;
+	var windowMock;
+
+	beforeEach(module('Evaluator', function($provide) {
+		windowMock = {
+			localStorage: {
+				Token: "mockGoodToken",
+				User: [{name: "Bob", ssn: '123456789'}],
+			}
+		};
+		$provide.value('window', windowMock);
+	}));
+
+	beforeEach(inject(function ($controller, $rootScope, $location, $window) {
+		scope = $rootScope.$new();
+		location = $location;
+		controller = $controller('NavigationController', {
+			$scope: scope,
+			$location: location,
+			$window: windowMock
+		});
+	}));
+
+
+	it('Should disconnect logged in user', function() {
+		scope.disconnecting();
+
+		expect(location.$$path).toBe('/login');
+		expect(windowMock.localStorage.Token).toBe('');
+		expect(windowMock.localStorage.User.length).toBe(0);
+	});
+});
+
+describe('StudentEvalsController', function() {
 	var controller;
 	var scope;
 	var windowMock;
 
-	var mockAdminFactory = {
-		getEvals: function(id) {
+	var mockStudentFactory = {
+		getMyEvals: function() {
 			var promise = {
 				then: function(success, error) {
-					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
+					if(windowMock.localStorage['Token'] === "mockGoodToken") {
 						success({
-							data: {
-								ID: 1,
-								TemplateID: 1,
-								TemplateTitle: "Aðala undirstaða",
-								TemplateTitleEN: "Main template",
-								Courses: [{
+							data: [
+								{
 									CourseID: "T-427-WEPO",
 									CourseName: "Vefforritun II",
 									CourseNameEN: "Web Programming II",
 									ID: 1,
 									Semester: "20151",
-									Questions: [{
-											QuestionID: 1,
-											TeacherSSN: null,
-											nullText: "Fallegt verk?",
-											TextEN: "Work of art?",
-											Type: "text",
-											OptionsResults: null,
-											TextResults: [
-												"teyesyesys",
-												"I hear you boi",
-												"yesyesno?",
-												"wewe",
-												"bebebebebe"]
-										}, {
-											QuestionID: 2,
-											TeacherSSN: null,
-											Text: "Verkefni handa börnum",
-											TextEN: "Babadook?",
-											Type: "single",
-											TextResults: null,
-											OptionsResults: [{
-													Answer: 1,
-													AnswerText: "Varla er það hérna!",
-													AnswerTextEN: "Where is this!",
-													Count: 4
-												}, {
-													Answer: 2,
-													AnswerText: "Fleiri smákökur",
-													AnswerTextEN: "Moar cookies",
-													Count: 2
-												}
-											]
-										}, {
-											QuestionID: 3,
-											TeacherSSN: "1203735289",
-											Text: "Besta verkið?",
-											TextEN: "What is his best Work?",
-											Type: "text",
-											OptionsResults: null,
-											TextResults: [
-												"Nothing at all",
-												"His hair"]
-										}, {
-											QuestionID: 4,
-											TeacherSSN: "1203735289",
-											Text: "Besti trefillinn?",
-											TextEN: "What is his best trefill?",
-											Type: "text",
-											OptionsResults: null,
-											TextResults: [
-												"Nothing at all",
-												"His hair"]
-										}
-									]
-								}]
-							}
+									TemplateName: "Aðala undirstaða",
+									TemplateNameEN: "Main template",
+								}, {
+									CourseID: "T-501-FMAL",
+									CourseName: "Forritunarmál",
+									CourseNameEN: "Programming languages",
+									ID: 1,
+									Semester: "20151",
+									TemplateName: "Aðala undirstaða",
+									TemplateNameEN: "Main template"
+								}
+							]
 						});
 					} else {
 						error({Error: 'Failed to load evaluation'});
-					}
-				}
-			}
-			return promise;
-		},
-		getTeachers: function(id, semester) {
-			var promise = {
-				then: function(success, error) {
-					if(windowMock.localStorage['token'] === "mockGoodToken" && id !== undefined) {
-						success({data: [{
-							Email: "man@beef.com",
-							FullName: "Madur Mansson",
-							ImageURL: "http://example.com/example.jpg",
-							Role: "teacher",
-							SSN: "1203735289"
-						}]});
-					} else {
-						error({Error: 'Failed to load teachers'});
 					}
 				}
 			}
@@ -831,58 +799,273 @@ describe('AdminEvalsController', function() {
 
 	beforeEach(module('Evaluator', function($provide) {
 		windowMock = {
-			localStorage: { token: "mockGoodToken" }
+			localStorage: { Token: "mockGoodToken" }
 		};
 		$provide.value('window', windowMock);
 	}));
 
-	beforeEach(inject(function ($controller, $rootScope, $routeParams) {
+	beforeEach(inject(function ($controller, $rootScope, $location, $window) {
 		scope = $rootScope.$new();
-		params = $routeParams;
-		controller = $controller('AdminEvalController', {
+		controller = $controller('StudentEvalsController', {
 			$scope: scope,
-			$routeParams: { id: 1 },
-			AdminFactory: mockAdminFactory
+			StudentFactory: mockStudentFactory,
+			$window: windowMock
 		});
 	}));
 
-	it('Should get eval and map into courses object', function() {
-		scope.getEval(1);
+	it('Should get user evaluations', function() {
+		scope.showEvals();
 
-		expect(scope.courses[0].id).toEqual('T-427-WEPO');
-		expect(scope.courses[0].name).toEqual('Vefforritun II');
-		expect(scope.courses[0].nameEN).toEqual('Web Programming II');
-		expect(scope.courses[0].semester).toEqual('20151');
-		expect(scope.courses[0].questions.length).toEqual(2);
-		expect(scope.courses[0].teachers['1203735289']).not.toBeUndefined();
-		expect(scope.courses[0].teachers['1203735289'].name).toEqual('Madur Mansson');
-		expect(scope.courses[0].teachers['1203735289'].imageURL).toEqual('http://example.com/example.jpg');
-		expect(scope.courses[0].teachers['1203735289'].email).toEqual('man@beef.com');
-		expect(scope.courses[0].teachers['1203735289'].questions.length).toEqual(2);
+		expect(scope.evaluations.length).toBe(2);
 	});
 
-	it('Should fail loading eval', function() {
-		scope.errorMessage = '';
+	/*it('Should not get user evaluations', function() {
+		_window.localStorage = { Token: 'notGoodOne' };
 
+		scope.showEvals();
+
+		expect(scope.evaluations.length).toBe(0);
+	});*/
+});
+
+
+describe('StudentEvalController', function() {
+	var controller;
+	var scope;
+	var windowMock;
+	var routeMock;
+	var location;
+
+	var mockStudentFactory = {
+		getTeachers: function(courseID, semester) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['Token'] === "mockGoodToken" && courseID !== undefined && semester !== undefined) {
+						success({
+							data: [{
+								Email: "man@beef.com",
+								FullName: "Madur Mansson",
+								ImageURL: "http://example.com/example.jpg",
+								Role: "teacher",
+								SSN: "1203735289"
+							}]
+						});
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+		getStudentEval: function(courseID, semester, id) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['Token'] === "mockGoodToken"
+						&& courseID !== undefined
+						&& semester !== undefined
+						&& id !== undefined) {
+						success({
+							data: {
+								ID: 1,
+								IntroText: "Undirbúið eykkur undir helvíti.",
+								IntroTextEN: "Prepare for doom",
+								TemplateID: 1,
+								Title: "Aðala undirstaða",
+								TitleEN: "Main template",
+								CourseQuestions: [
+									{
+										ID: 1,
+										Text: "Fallegt verk?",
+										TextEN: "Work of art?",
+										Type: "text",
+										Answers: []
+									}, {
+										ID: 2,
+										Text: "Verkefni handa börnum",
+										TextEN: "Babadook?",
+										Type: "single",
+										Answers: [
+											{
+												ID: 1,
+												Text: "Varla er það hérna!",
+												TextEN: "Where is this!"
+											}, {
+												ID: 2,
+												Text: "Fleiri smákökur",
+												TextEN: "Moar cookies"
+											}, {
+												ID: 3,
+												Text: "Veit eigi, þetta er leiðinlegt.",
+												TextEN: "Dunno, this is boring."
+											}
+										]
+									}
+								],
+								TeacherQuestions: [
+									{
+										ID: 3,
+										Text: "Besta verkið?",
+										TextEN: "What is his best Work?",
+										Type: "text",
+										Answers: []
+									}, {
+										ID: 4,
+										Text: "Besti trefillinn?",
+										TextEN: "What is his best trefill?",
+										Type: "text",
+										Answers: []
+									}
+								]
+							}
+						});
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+		answerStudentEval: function(courseID, semester, id, answers) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['Token'] === "mockGoodToken"
+						&& courseID !== undefined
+						&& semester !== undefined
+						&& id !== undefined
+						&& answers !== undefined) {
+						success({ data: {} });
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+	};
+
+	beforeEach(module('Evaluator', function($provide) {
+		windowMock = {
+			localStorage: { Token: "mockGoodToken" }
+		};
+		routeMock = {
+			ID: 1,
+			CourseID: 1,
+			Semester: '20151'
+		};
+
+		$provide.value('window', windowMock);
+	}));
+
+	beforeEach(inject(function ($controller, $rootScope, $location, $window, $routeParams) {
+		scope = $rootScope.$new();
+		location = $location;
+		controller = $controller('StudentEvalController', {
+			$scope: scope,
+			StudentFactory: mockStudentFactory,
+			$window: windowMock,
+			$location: location,
+			$routeParams: routeMock
+		});
+	}));
+
+	it('Should get evaluation', function() {
 		scope.getEval();
 
-		expect(scope.errorMessage).toBe('Failed to load evaluation');
+		expect(scope.courseQuestions.length).toBe(2);
+		expect(scope.teacherQuestions.length).toBe(2);
+		expect(scope.courseAnswers.length).toBe(4);
+		expect(scope.teacherAnswers.length).toBe(2);
+	});
+	/*
+	it('Should not get evaluation', function() {
+		scope.ID = undefined;
+		scope.getEval();
+
+		expect(scope.courseQuestions.length).toBe(0);
+		expect(scope.teacherQuestions.length).toBe(0);
+	});
+	*/
+
+	it('Should get teachers', function() {
+		scope.getTeachers();
+
+		expect(scope.teachers.length).toBe(1);
 	});
 
-	it('Should fail loading teachers', function() {
-		scope.errorMessage = '';
+	/*
+	it('Should not get teachers', function() {
+		scope.getTeachers();
 
-		scope.getTeacherInfo({id: undefined, semester: '2'});
+		expect(scope.courseQuestions.length).toBe(2);
+		expect(scope.teacherQuestions.length).toBe(2);
+		expect(scope.courseAnswers.length).toBe(4);
+		expect(scope.teacherAnswers.length).toBe(2);
+	});
+	*/
 
-		expect(scope.errorMessage).toBe('Failed to load teachers');
+	it('Should answer question', function() {
+		var answers = [
+			{
+				QuestionID: 1,
+				TeacherSSN: "",
+				Value: "yesyes",
+			}, {
+				QuestionID: 2,
+				TeacherSSN: "",
+				Value: 1
+			}
+		]
+		scope.answerQuestion(answers);
+
+		expect(scope.errorMessage).toBe('');
 	});
 
+	it('Should fail answer question', function() {
+		scope.answerQuestion();
 
-	it('Should flip isOpen', function() {
-		scope.isOpen = false;
+		expect(scope.errorMessage).toBe('Failed to get data');
+	});
 
-		scope.openClose();
+	it('Should answer and post all questions', function() {
+		scope.courseAnswers = [
+			{
+				QuestionID: 1,
+				TeacherSSN: "",
+				Value: "yesyes",
+			}, {
+				QuestionID: 2,
+				TeacherSSN: "",
+				Value: 1
+			}
+		]
 
-		expect(scope.isOpen).toBeTruthy();
-	});*/
+		scope.teacherAnswers = [
+			[
+				{
+					QuestionID: 1,
+					TeacherSSN: "321",
+					Value: "",
+				}, {
+					QuestionID: 2,
+					TeacherSSN: "321",
+					Value: ""
+				}
+			],
+			[
+				{
+					QuestionID: 1,
+					TeacherSSN: "123",
+					Value: "yesyes",
+				}, {
+					QuestionID: 2,
+					TeacherSSN: "123",
+					Value: 5
+				}
+			],
+		]
+		scope.saveEval();
+
+		expect(scope.errorMessage).toBe('');
+		expect(location.path()).toBe('/evals');
+	});
 });
