@@ -1,18 +1,21 @@
-<h2>{{title}} - kennslumat</h2>
+<h2>{{title}} - Evaluation</h2>
+<h4>{{intro}}</h4>
 <div>
-	<h3>Course questions:</h3>
-	<div ng-repeat="(key, question) in courseQuestions">
-		<evaluation-question ng-model="question" ng-answers="courseAnswers[key]"></evaluation-question>
-	</div>
-
-	<h3>Teacher questions:</h3>
-	<div ng-repeat="(tKey , teacher) in teachers">
-		<h4>{{teacher.FullName}}</h4>
-			<img src="{{teacher.ImageURL}}" class="teachers">
-		<div ng-repeat="(qKey, question) in teacherQuestions">
-			<evaluation-question ng-model="question" ng-answers="teacherAnswers[tKey][qKey]"></evaluation-question>
+	<div ng-cloak ng-show="hideCourse !== 1">
+		<h3>Course questions:</h3>
+		<div ng-repeat="(key, question) in courseQuestions">
+			<evaluation-question ng-model="question" ng-answers="courseAnswers[key]"></evaluation-question>
 		</div>
 	</div>
-
+	<div ng-cloak ng-show="hideTeacher !== 1">
+		<h3>Teacher questions:</h3>
+		<div ng-repeat="(tKey , teacher) in teachers">
+			<h4>{{teacher.FullName}}</h4>
+				<img src="{{teacher.ImageURL}}" class="teachers">
+			<div ng-repeat="(qKey, question) in teacherQuestions">
+				<evaluation-question ng-model="question" ng-answers="teacherAnswers[tKey][qKey]"></evaluation-question>
+			</div>
+		</div>
+	</div>
 	<button type="submit" class="btn btn-success" ng-click="saveEval()">Submit evaluation</button>
 </div>
