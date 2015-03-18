@@ -1083,3 +1083,111 @@ describe('StudentEvalController', function() {
 		expect(location.path()).toBe('/evals');
 	});
 });
+
+describe('StudentEvalController', function() {
+	var controller;
+	var scope;
+	var windowMock;
+	var window;
+	var window_;
+	var routeMock;
+	var location;
+
+	var mockStudentFactory = {
+		getTeachers: function(courseID, semester) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['Token'] === "mockGoodToken" && courseID !== undefined && semester !== undefined) {
+						success({
+							data: [{
+								Email: "man@beef.com",
+								FullName: "Madur Mansson",
+								ImageURL: "http://example.com/example.jpg",
+								Role: "teacher",
+								SSN: "1203735289"
+							}]
+						});
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+		getStudentEval: function(courseID, semester, id) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['Token'] === "mockGoodToken"
+						&& courseID !== undefined
+						&& semester !== undefined
+						&& id !== undefined) {
+						success({
+							data: {
+								ID: 1,
+								IntroText: "Undirbúið eykkur undir helvíti.",
+								IntroTextEN: "Prepare for doom",
+								TemplateID: 1,
+								Title: "Aðala undirstaða",
+								TitleEN: "Main template",
+								CourseQuestions: [],
+								TeacherQuestions: []
+							}
+						});
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+		answerStudentEval: function(courseID, semester, id, answers) {
+			var promise = {
+				then: function(success, error) {
+					if(windowMock.localStorage['Token'] === "mockGoodToken"
+						&& courseID !== undefined
+						&& semester !== undefined
+						&& id !== undefined
+						&& answers !== undefined) {
+						success({ data: {} });
+					} else {
+						error({Error: 'Failed to load evaluation'});
+					}
+				}
+			}
+			return promise;
+		},
+	};
+
+	beforeEach(module('Evaluator', function($provide) {
+		windowMock = {
+			localStorage: { Token: "mockGoodToken" }
+		};
+		routeMock = {
+			ID: 1,
+			CourseID: 1,
+			Semester: '20151'
+		};
+
+		$provide.value('window', windowMock);
+	}));
+
+	beforeEach(inject(function ($controller, $rootScope, $location, _window_, $routeParams) {
+		scope = $rootScope.$new();
+		window_ = _window_;
+		location = $location;
+		controller = $controller('StudentEvalController', {
+			$scope: scope,
+			StudentFactory: mockStudentFactory,
+			$location: location,
+			$routeParams: routeMock
+		});
+	}));
+
+	it('should hide course text if there are no course questions', function() {
+		scope.getEval();
+		expect(scope.hideCourse).toEqual(1);
+		expect(scope.hideTeacher).toEqual(1);
+	});
+
+
+});
