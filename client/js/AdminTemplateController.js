@@ -1,4 +1,4 @@
-angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$location', '$routeParams', 'AdminFactory' ,'toastr',
+angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$location', '$routeParams', 'AdminFactory',
 	function ($scope, $location, $routeParams, AdminFactory) {
 	$scope.errorMessage = '';
 

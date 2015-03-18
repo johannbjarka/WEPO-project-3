@@ -352,13 +352,13 @@ describe('AdminTemplateController', function() {
 		expect(scope.getTemplate).toHaveBeenCalled();
 	});
 
-
+	
 	it('Should not get template if token is invalid', function() {
 		window_.localStorage = { Token: 'notGoodOne' };
 		scope.getTemplate(1);
 		expect(scope.errorMessage).toEqual('Failed to get data');
 	});
-
+	
 	it('Should should fail loading template', function() {
 		scope.errorMessage = '';
 
@@ -1188,6 +1188,4 @@ describe('StudentEvalController', function() {
 		expect(scope.hideCourse).toEqual(1);
 		expect(scope.hideTeacher).toEqual(1);
 	});
-
-
 });

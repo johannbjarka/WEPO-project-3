@@ -1,5 +1,5 @@
-angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$location', '$routeParams', 'AdminFactory', 'toastr',
-	function ($scope, $location, $routeParams, AdminFactory, toastr) {
+angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$location', '$routeParams', 'AdminFactory',
+	function ($scope, $location, $routeParams, AdminFactory) {
 	$scope.errorMessage = "";
 	$scope.isOpen = true;
 
