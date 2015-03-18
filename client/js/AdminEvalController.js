@@ -1,7 +1,6 @@
 angular.module('Evaluator').controller('AdminEvalController', ['$scope', '$location', '$routeParams', 'AdminFactory', 'toastr',
 	function ($scope, $location, $routeParams, AdminFactory, toastr) {
 	$scope.errorMessage = "";
-	$scope.isRootOpen = true;
 	$scope.isOpen = true;
 
 	$scope.template = {};
