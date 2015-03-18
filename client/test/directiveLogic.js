@@ -1,22 +1,26 @@
-/*
-describe('Unit testing datepicker', function() {
+
+describe('Unit testing ----', function() {
 	var $compile,
-		$rootScope;
+		$rootScope,
+		$templateCache;
 
 	beforeEach(module('Evaluator'));
 
-	beforeEach(inject(function(_$compile_, _$rootScope_){
+	beforeEach(inject(function(_$compile_, _$rootScope_, _$templateCache_){
 		$compile = _$compile_;
 		$rootScope = _$rootScope_;
+		$templateCache = _$templateCache_;
 	}));
 
 	it('Replaces the element with the appropriate content', function() {
-		// Compile a piece of HTML containing the directive
-		var element = $compile("<a-great-eye></a-great-eye>")($rootScope);
-		// fire all the watches, so the scope expression {{1 + 1}} will be evaluated
-		$rootScope.$digest();
-		// Check that the compiled element contains the templated content
-		expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
+		console.log($templateCache);
+		$rootScope.que = {
+			TextResults: ["Abcd", "Abcd"],
+			OptionsResults: null
+		}
+		//var element = $compile('<display-question ng-model="{{que}}"></display-question>')($rootScope);
+		var element = $compile('<evaluation-question ng-model="{{que}}"></evaluation-question>')($rootScope);
+		//$rootScope.$digest();
+		//expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
 	});
 });
-*/
