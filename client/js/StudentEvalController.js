@@ -30,10 +30,10 @@ angular.module('Evaluator').controller('StudentEvalController', ['$scope', '$loc
 			$scope.intro = response.data.IntroTextEN;
 			$scope.courseQuestions = response.data.CourseQuestions;
 			$scope.teacherQuestions = response.data.TeacherQuestions;
-			if($scope.courseQuestions.length === 0){
+			if($scope.courseQuestions.length === 0) {
 				$scope.hideCourse = 1;
 			}
-			if($scope.teacherQuestions.length === 0){
+			if($scope.teacherQuestions.length === 0) {
 				$scope.hideTeacher = 1;
 			}
 			for(i = 0; i < $scope.courseQuestions.length; i++) {
