@@ -1,6 +1,6 @@
 var Evaluator = angular.module('Evaluator', ['ngRoute', 'ngAnimate', 'toastr', 'ui.bootstrap', 'chart.js']);
-angular.module("Evaluator").constant("API", "http://localhost:19358/api/v1");
-
+angular.module("Evaluator").constant("API", "http://dispatch.ru.is/h38/api/v1");
+//http://localhost:19358/api/v1
 angular.module('Evaluator').run(['$http', '$window', '$location',
 	function ($http, $window, $location) {
 		var storage = $window.localStorage;
