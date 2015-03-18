@@ -45,6 +45,8 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 		}
 	};
 
+	/*******************************************************/
+
 	$scope.addTeacherTextQuestion = function() {
 		$scope.TeacherQuestions.push({TextEN: '', Text: '', Type: 'text'});
 	};
@@ -64,6 +66,24 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 	$scope.removeTeacherQuestion = function(id) {
 		$scope.TeacherQuestions.splice(id, 1);
 	};
+
+	$scope.removeTeacherQuestionAnswer = function(id, answerID) {
+		$scope.TeacherQuestions[id].Answers.splice(answerID, 1);
+	};
+
+	$scope.moveTeacherQuestion = function(id, shift) {
+		var temp = $scope.TeacherQuestions[id];
+		if(shift === 1 && id + 1 < $scope.TeacherQuestions.length) {
+			$scope.TeacherQuestions[id] = $scope.TeacherQuestions[id+1];
+			$scope.TeacherQuestions[id+1] = temp;
+		}
+		else if(shift === -1 && id > 0) {
+			$scope.TeacherQuestions[id] = $scope.TeacherQuestions[id-1];
+			$scope.TeacherQuestions[id-1] = temp;
+		}
+	};
+
+	/*******************************************************/
 
 	$scope.createTemplate = function() {
 		if($scope.form.$valid) {

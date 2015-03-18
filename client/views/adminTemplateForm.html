@@ -33,7 +33,7 @@
 
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h2 clas="panel-header">Course questions</h2>
+			<h2 class="panel-title">Course questions</h2>
 		</div>
 		<ol class="list-header">
 			<li ng-repeat="(key, item) in CourseQuestions" class="question_{{item.Type}}">
@@ -94,7 +94,70 @@
 		</div>
 	</div>
 
-	<h3>Teacher questions</h3>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h2 class="panel-title">Teacher questions</h2>
+		</div>
+		<ol class="list-header">
+			<li ng-retpeat="(key, item) in TeacherQuestions" class="question_{{item.Type}}">
+				<ng-form name="tQuestions">
+					<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || tQuestions.tTextEN.$touched) && tQuestions.tTextEN.$error.required}">
+						<label for="tQuestionEN{{key}}" class="control-label col-sm-3">Question</label>
+						 <div class="col-sm-9">
+							<input type="text" class="form-control" id="tQuestionEN{{key}}" name="tTextEN" ng-model="item.TextEN" required>
+							<span ng-show="(form.$submitted || tQuestions.tTextEN.$touched) && tQuestions.tTextEN.$error.required" class="glyphicon glyphicon-remove form-control-feedback"></span>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || tQuestions.tText.$touched) && tQuestions.tText.$error.required}">
+						<label for="tQuestion{{key}}" class="control-label col-sm-3">Native question</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="tQuestion{{key}}" name="tText" ng-model="item.Text" required>
+							<span ng-show="(form.$submitted || tQuestions.tText.$touched) && tQuestions.tText.$error.required" class="glyphicon glyphicon-remove form-control-feedback"></span>
+						</div>
+					</div>
+
+					<ol ng-if="item.Type !== 'text'" class="list-answers">
+						<li ng-repeat="(aKey, answer) in item.Answers">
+							<ng-form name="tAnswers">
+								<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || tAnswers.answerEN.$touched) && tAnswers.answerEN.$error.required}">
+									<label for="tAnswerEN{{aKey}}" class="control-label col-sm-3">Answer</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="tAnswerEN{{aKey}}" name="answerEN" ng-model="answer.TextEN" required>
+										<span ng-show="(form.$submitted || tAnswers.answerEN.$touched) && tAnswers.answerEN.$error.required" class="glyphicon glyphicon-remove form-control-feedback"></span>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{'has-error': (form.$submitted || tAnswers.answer.$touched) && tAnswers.answer.$error.required}">
+									<label for="tAnswer{{aKey}}" class="control-label col-sm-3">Native answer</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="tAnswer{{aKey}}" name="answer" ng-model="answer.Text" required>
+										<span ng-show="(form.$submitted || tAnswers.answer.$touched) && tAnswers.answer.$error.required" class="glyphicon glyphicon-remove form-control-feedback"></span>
+									</div>
+								</div>
+								<div class="delete-button" ng-click="removeTeacherQuestionAnswer(key, aKey)">&#57364;</button>
+							</ng-form>
+						</li>
+					</ol>
+
+					<div class="row">
+						<div class="col-sm-offset-3 col-sm-9">
+						<button type="button" class="btn btn-primary add-button" ng-if="item.Type !== 'text'" ng-click="addTeacherQuestionAnswer(key)">Add answer</button>
+						<button type="button" class="btn btn-danger pull-right" ng-click="removeTeacherQuestion(key)">Remove</button>
+					</div>
+					<span class="move-up" ng-click="moveTeacherQuestion(key, -1)">&#57619;</span>
+					<span class="move-down" ng-click="moveTeacherQuestion(key, 1)">&#57620;</span>
+				</ng-form>
+			</li>
+		</ol>
+		<div class="panel-footer">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-default" ng-click="addTeacherTextQuestion()"><span class="glyphicon glyphicon-font"></span> Text question</button>
+				<button type="button" class="btn btn-default" ng-click="addTeacherSingleQuestion()"><span class="glyphicon glyphicon-record"></span> Single select</button>
+				<button type="button" class="btn btn-default" ng-click="addTeacherMultiQuestion()"><span class="glyphicon glyphicon-check"></span> Multi select</button>
+			</div>
+		</div>
+	</div>
+
+	<!--h3>Teacher questions</h3>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div class="btn-group" role="group">
@@ -140,7 +203,7 @@
 				<hr>
 			</div>
 		</div>
-	</div>
+	</div-->
 
 	<div class="row">
 		<button type="submit" class="btn btn-default" ng-click="createTemplate()">Create</button>
