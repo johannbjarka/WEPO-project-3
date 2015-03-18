@@ -153,7 +153,7 @@ describe('AdminFactory', function() {
 		httpBackend.flush();
 	});
 
-	it('should fail to return evaluationtemplates', function() {
+	it('should fail to return evaluation', function() {
 		httpBackend.expect('GET', 'http://localhost:19358/api/v1/evaluations')
 		.respond(401, { ErrorMessage : "Unauthorized" });
 
@@ -243,5 +243,150 @@ describe('AdminFactory', function() {
 
 });
 
+describe('StudentFactory', function() {
+	var httpBackend, mockStudentFactory;
+	var fakeCourseQuestions = [];
+	var fakeTeacherQuestions = [];
+   
+	beforeEach(function() {
+		module('Evaluator');
+		
+		inject( function (StudentFactory, $httpBackend) {
+			httpBackend = $httpBackend;
+			mockStudentFactory = StudentFactory;
+		});
+		
+	});
 
+	afterEach(function() {
+		httpBackend.verifyNoOutstandingExpectation();
+		httpBackend.verifyNoOutstandingRequest();
+	});
+	
+	it('should return a coresponding student evaluation', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/courses/T-622-ARTI/20151/evaluations/1')
+		.respond(200, {ID : 1, TemplateID : 3, Title : "title", TitleEN : "titleEN", IntroText: "sample", IntroTextEN: "sampleEN", CourseQuestions: [], TeacherQuestions: []});
+
+		mockStudentFactory.getStudentEval("T-622-ARTI", "20151", 1)
+		.then(function(response) {
+			expect(response.data.ID).toEqual(1);
+			expect(response.data.TemplateID).toEqual(3);
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should fail to return evaluation', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/courses/T-622-ARTI/haust/evaluations/bad')
+		.respond(400, { ErrorMessage : "Bad Request" });
+
+		mockStudentFactory.getStudentEval("T-622-ARTI", "haust", "bad")
+		.then(function(response) {
+			expect(response.data.ErrorMessage).toEqual('Bad Request');
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should answer an evaluation', function() {
+		httpBackend.expect('POST', 'http://localhost:19358/api/v1/courses/T-622-ARTI/20151/evaluations/1', [{QuestionID: "4", TeacherSSN: '', Value: 'Yes'},{QuestionID: "3", TeacherSSN: '', Value: 'NO'}])
+		.respond(204, { successMessage : "No Content" });
+
+		mockStudentFactory.answerStudentEval("T-622-ARTI", "20151", 1, [{QuestionID: "4", TeacherSSN: '', Value: 'Yes'},{QuestionID: "3", TeacherSSN: '', Value: 'NO'}])
+		.then(function(response) {
+			expect(response.data.successMessage).toEqual("No Content");
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should fail to add an evaluation', function() {
+		httpBackend.expect('POST', 'http://localhost:19358/api/v1/courses/3/20151/evaluations/1', [{QuestionID: "4", TeacherSSN: '', Value: 'Yes'},{QuestionID: "3", TeacherSSN: '', Value: 'NO'}])
+		.respond(400, { ErrorMessage : "Bad Request" });
+
+		mockStudentFactory.answerStudentEval(3, "20151", 1, [{QuestionID: "4", TeacherSSN: '', Value: 'Yes'},{QuestionID: "3", TeacherSSN: '', Value: 'NO'}])
+		.then(function(response) {
+			expect(response.data.ErrorMessage).toEqual('Bad Request');
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should return teachers in a given course and semester', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/courses/T-427-WEPO/20151/teachers')
+		.respond(200, [{"Username":"baering10","FullName":"Bæring Gunnar Steinþórsson","SSN":"1001902499","Email":"baering10@ru.is","Role":"teacher","ImageURL":"http://www.ru.is/kennarar/dabs/img/10/1001902499.jpg"}]);
+
+		mockStudentFactory.getTeachers("T-427-WEPO", "20151")
+		.then(function(response) {
+			expect(response.data[0].Username).toEqual("baering10");
+			expect(response.data[0].SSN).toEqual("1001902499");
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should fail to return teachers', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/courses/T-427-WEPO/haust/teachers')
+		.respond(400, { ErrorMessage : "Bad Request" });
+
+		mockStudentFactory.getTeachers("T-427-WEPO", "haust")
+		.then(function(response) {
+			expect(response.data.ErrorMessage).toEqual('Bad Request');
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should return courses for the loged in student', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/my/courses')
+		.respond(200, [{"ID":1,"CourseID":"T-427-WEPO","Name":"Vefforritun II","NameEN":"Web Programming II","DateBegin":"2015-01-14T00:00:00","DateEnd":"2015-04-04T00:00:00"}]);
+
+		mockStudentFactory.getMyCourses()
+		.then(function(response) {
+			expect(response.data[0].DateBegin).toEqual("2015-01-14T00:00:00");
+			expect(response.data[0].CourseID).toEqual("T-427-WEPO");
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should return unauthorized for a logout student', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/my/courses')
+		.respond(401, { ErrorMessage : "Unauthorized" });
+		
+		mockStudentFactory.getMyCourses()
+		.then(function(response) {
+			expect(response.data.ErrorMessage).toEqual('Unauthorized');
+		});
+
+		httpBackend.flush();
+	});
+	
+	it('should return evaluations for the loged in student', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/my/evaluations')
+		.respond(200, [{"ID":4,"CourseID":"T-427-WEPO","CourseName":"Vefforritun II","CourseNameEN":"Web Programming II","TemplateName":"f","TemplateNameEN":"f","Semester":"20151"}]);
+
+		mockStudentFactory.getMyEvals()
+		.then(function(response) {
+			expect(response.data[0].TemplateName).toEqual("f");
+			expect(response.data[0].CourseID).toEqual("T-427-WEPO");
+		});
+
+		httpBackend.flush();
+	});
+	
+		it('should not return evaluations for the loged out student', function() {
+		httpBackend.expect('GET', 'http://localhost:19358/api/v1/my/evaluations')
+		.respond(400, { ErrorMessage : "Bad Request" });
+		
+		mockStudentFactory.getMyEvals()
+		.then(function(response) {
+			expect(response.data.ErrorMessage).toEqual('Bad Request');
+		});
+
+		httpBackend.flush();
+	});
+	
+
+});
 
