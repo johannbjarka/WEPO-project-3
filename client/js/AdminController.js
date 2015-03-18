@@ -12,8 +12,7 @@ angular.module('Evaluator').controller('AdminController', ['$scope', '$location'
 		templateID: 0
 	};
 
-	$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-	$scope.format = $scope.formats[2];
+	$scope.format = 'dd.MM.yyyy';
 
 	$scope.showEvals = function() {
 		AdminFactory.getEvals()
