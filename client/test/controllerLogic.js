@@ -276,7 +276,7 @@ describe('AdminTemplateController', function() {
 	var window_;
 	var window;
 	var windowMock;
-
+	
 	var mockAdminFactory = {
 		getTemplate: function(id) {
 			var promise = {
@@ -342,6 +342,7 @@ describe('AdminTemplateController', function() {
 
 		spyOn(scope, 'getTemplate');
 	}));
+
 
 	/* NOT WORKING CORRECTLY
 	it('Should not get template if id is not set', function() {

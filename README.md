@@ -8,3 +8,6 @@ Web based student evaluation built with AngularJS.
 
 ## Installation and running
 * Run start-init.bat
+
+##
+* To see code coverage, navigate to client/coverage/PhantomJs... and view index.html
