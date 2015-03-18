@@ -104,7 +104,7 @@ angular.module('Evaluator').controller('AdminTemplateController', ['$scope', '$l
 		if($routeParams.id !== undefined) {
 			$scope.getTemplate($routeParams.id);
 		}
-	}
+	};
 
 	$scope.isViewing();
 }]);
